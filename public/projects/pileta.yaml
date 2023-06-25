@@ -1,0 +1,131 @@
+esphome:
+  name: pileta
+  platform: ESP32
+  board: esp-wrover-kit
+  sentence: "Pileta"
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Pileta Fallback Hotspot"
+    password: "9LHFfL54xqA9"
+
+captive_portal:
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+  encryption:
+    key: "QLheYZkeAqtPmt1zUD/vKUjzhkdLhru6kMTFN2CAKPE="
+
+ota:
+  password: "qazwsx"
+
+
+
+switch:
+#Riego desde perforacion
+  - platform: gpio
+    pin: GPIO19
+    name: "1-1 Pozo Riego Interior"
+    inverted: yes
+    
+  - platform: gpio
+    pin: GPIO18
+    name: "1-2 Pozo Riego Exterior"
+    inverted: yes
+    
+  - platform: gpio
+    pin: GPIO5
+    name: "1-3 Pozo Riego Oeste"
+    inverted: yes
+    
+  - platform: gpio
+    pin: GPIO17
+    name: "1-4 Pozo Llenado Pileta"
+    inverted: yes
+   
+#Riego desde bomba pileta
+  - platform: gpio
+    pin: GPIO16
+    name: "2-1 Pileta Riego Interior"
+    inverted: yes
+    
+  - platform: gpio
+    pin: GPIO4
+    name: "2-2 Pileta Riego Exterior"
+    inverted: yes
+    
+  - platform: gpio
+    pin: GPIO0
+    name: "2-3 Pileta Riego Oeste"
+    inverted: yes
+    
+  - platform: gpio
+    pin: GPIO15
+    name: "2-4 Pileta Llenado Pileta"
+    inverted: yes
+    
+#Bombas
+  - platform: gpio
+    pin: GPIO13
+    name: "3-1 Transformador 24v"
+    inverted: yes
+    
+  - platform: gpio
+    pin: GPIO14
+    name: "4-1 Bomba perforación"
+    inverted: yes
+    
+  - platform: gpio
+    pin: GPIO27
+    name: "4-2 Bomba Riego pileta"
+    inverted: yes
+
+  - platform: gpio
+    pin: GPIO26
+    name: "4-3 Bomba filtro pileta"
+    inverted: yes
+
+#Entradas    
+  - platform: gpio
+    pin: GPIO25
+    name: "5-1 Entrada Coprol"
+    inverted: yes
+    
+  - platform: gpio
+    pin: GPIO33
+    name: "5-2 Entrada Pileta"
+    inverted: yes
+    
+#Salida Coprol desde bomba
+  - platform: gpio
+    pin: GPIO32
+    name: "6.1 Pozo a Coprol (Ojo)"
+    inverted: yes
+    
+#Relay 4 salidas
+  - platform: gpio
+    pin: GPIO21
+    name: "7.1 Reflectores Pileta"
+    inverted: false
+
+  - platform: gpio
+    pin: GPIO22
+    name: "7.2 Robot Barrefondo"
+    inverted: false
+    
+  - platform: gpio
+    pin: GPIO23
+    name: "7.3 Disponible"
+    inverted: false
+    
+#  - platform: gpio
+#    pin: GPIO34
+#    name: "7.4 Disponible"
+#    inverted: yes

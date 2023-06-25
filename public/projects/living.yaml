@@ -1,0 +1,300 @@
+esphome:
+  name: living
+  platform: ESP8266
+  board: nodemcuv2
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Living Fallback Hotspot"
+    password: "30EAgUDOl3Yk"
+
+captive_portal:
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+  encryption:
+    key: "MmAl3Emuz/G3P5fFO2gdmCAQjq4fULY5a4fEOUMC8Jg="
+
+ota:
+  password: "qazwsx"
+
+# TX  Celeste
+# RX  Violeta (GPIO3)    binary sensor   Llave garganta (Tira de led) NO FUNCIONA
+# D1  Marron             binary sensor   Llave mesa de pool
+# D2  Verde agua         binary sensor   Llave ventilador
+# D3  Naranja       I    Switch          Fuente tira de led
+# D4  Amarillo           Light           Tira de led
+# D5  Negro         II   Switch          Luces ventilador
+# D6  Gris               Sensor          Temperatura
+# D7  Rosa          III  Switch          Luces pool 1
+# D8  Blanco        IV   Switch          Luces pool 2
+# GND Azul
+ 
+binary_sensor:
+  - platform: gpio
+    name: "Llave garganta"
+    pin: 
+      number: GPIO3
+      inverted: True
+      mode: INPUT_PULLUP
+    filters:
+      - delayed_on: 150ms
+      - delayed_off: 150ms
+    on_state:
+      then:
+        - light.toggle : LEDs
+
+  - platform: gpio
+    name: "Llave mesa de pool"
+    pin: 
+      number: D1
+      inverted: True
+      mode: INPUT_PULLUP
+    filters:
+      - delayed_on: 150ms
+      - delayed_off: 150ms
+
+    on_state:
+      then:
+        if:
+          condition:
+            and:
+              - light.is_on: light_pool1
+              - light.is_on: light_pool2
+          then:
+            - light.turn_off: light_pool1
+            - light.turn_off: light_pool2
+          else:
+            if:
+              condition:
+                and:
+                  - light.is_on: light_pool1
+              then:
+                - light.turn_off: light_pool1
+                - light.turn_on: light_pool2
+              else:
+                if:
+                  condition:
+                    and:
+                      - light.is_on: light_pool2
+                  then:
+                    - light.turn_on: light_pool1
+                    - light.turn_on: light_pool2
+                  else:
+                    - light.turn_on: light_pool1
+
+  - platform: gpio
+    name: "Llave ventilador"
+    pin:
+      number: D2
+      inverted: true
+      mode: INPUT_PULLUP
+    filters:
+      - delayed_on: 150ms
+      - delayed_off: 150ms
+    on_state:
+      then:
+        - light.toggle : light_ventilador
+
+sensor:
+  - platform: dht
+    pin: D6
+    temperature:
+      name: "Temperatura"
+    humidity:
+      name: "Humedad"
+    model: DHT22
+    update_interval: 60s
+    
+light:
+  - platform: binary
+    name: "Fuente tira de led"
+    output: switch_garganta
+    id: light_garganta
+
+    
+  - platform: binary
+    name: "Luces ventilador"
+    output: switch_ventilador
+    id: light_ventilador
+
+  - platform: binary
+    name: "Luces pool 1"
+    output: switch_pool1
+    id: light_pool1
+    
+  - platform: binary
+    name: "Luces pool 2"
+    output: switch_pool2
+    id: light_pool2
+
+    
+  - platform: neopixelbus
+    variant: WS2812
+    pin: D4
+    method: ESP8266_UART1
+    num_leds: 1360
+    name: LEDs
+    id: LEDs
+    effects:
+    
+      - addressable_lambda:
+          name: "My Custom Effect"
+          update_interval: 16ms
+          lambda: |-
+            // it.size() - Number of LEDs
+            // it[num] - Access the LED at index num.
+            // Set the LED at num to the given r, g, b values
+            // it[num] = ESPColor(r, g, b);
+            // Get the color at index num (ESPColor instance)
+            // it[num].get();
+  
+            // Example: Simple color wipe
+            for (int i = it.size() - 1; i > 0; i--) {
+              it[i] = it[i - 1].get();
+            }
+            it[0] = ESPColor::random_color();
+  
+            // Bonus: use .range() and .all() to set many LEDs without having to write a loop.
+            it.range(0, 50) = ESPColor::BLACK;
+            it.all().fade_to_black(10);
+            
+            
+      - automation:
+          name: Custom Automation Effect
+          sequence:
+            - light.addressable_set:
+                id: LEDs
+                red: 100%
+                green: 100%
+                blue: 100%
+            - delay: 100ms
+            - light.addressable_set:
+                id: LEDs
+                range_from: 0
+                range_to: 20
+                red: 100%
+                green: 0%
+                blue: 0%
+              
+      - random:
+      - random:
+          name: Random Effect With Custom Values
+          transition_length: 5s
+          update_interval: 7s
+          
+      - addressable_fireworks:
+      - addressable_fireworks:
+          name: Fireworks Effect With Custom Values
+          update_interval: 32ms
+          spark_probability: 90%
+          use_random_color: true
+          fade_out_rate: 120
+
+      - addressable_flicker:
+      - addressable_flicker:
+          name: Flicker Effect With Custom Values
+          update_interval: 16ms
+          intensity: 15%
+
+      - addressable_twinkle:
+      - addressable_twinkle:
+          name: Twinkle Effect With Custom Values
+          twinkle_probability: 50%
+          progress_interval: 4ms
+          
+      - addressable_random_twinkle:
+      - addressable_random_twinkle:
+          name: Random Twinkle Effect With Custom Values
+          twinkle_probability: 50%
+          progress_interval: 32ms
+          
+      - addressable_scan:
+      - addressable_scan:
+          name: Scan Effect With Custom Values
+          move_interval: 50ms
+          scan_width: 25
+          
+      - addressable_color_wipe:
+      - addressable_color_wipe:
+          name: Color Wipe Effect With Custom Values
+          colors:
+            - red: 100%
+              green: 100%
+              blue: 100%
+              num_leds: 25
+            - red: 0%
+              green: 0%
+              blue: 0%
+              num_leds: 25
+          add_led_interval: 100ms
+          reverse: False
+      - addressable_color_wipe:
+          name: Rosario Central
+          colors:
+            - red: 100%
+              green: 100%
+              blue: 0%
+              num_leds: 50
+            - red: 0%
+              green: 0%
+              blue: 100%
+              num_leds: 50
+          add_led_interval: 20ms
+          reverse: False
+      - addressable_color_wipe:
+          name: Newelles Old Boys
+          colors:
+            - red: 100%
+              green: 0%
+              blue: 0%
+              num_leds: 50
+            - red: 0%
+              green: 0%
+              blue: 0%
+              num_leds: 50
+          add_led_interval: 20ms
+          reverse: False
+      - addressable_color_wipe:
+          name: River Plate
+          colors:
+            - red: 100%
+              green: 0%
+              blue: 0%
+              num_leds: 50
+            - red: 100%
+              green: 100%
+              blue: 100%
+              num_leds: 50
+          add_led_interval: 20ms
+          reverse: False
+
+      - addressable_rainbow:
+      - addressable_rainbow:
+          name: Rainbow Effect With Custom Values
+          speed: 25
+          width: 250
+
+output:
+  - platform: gpio
+    pin: D3
+    id: switch_garganta
+
+  - platform: gpio
+    pin: D5
+    id: switch_ventilador
+
+  - platform: gpio
+    pin: D7
+    id: switch_pool2
+
+  - platform: gpio
+    pin: D8
+    id: switch_pool1

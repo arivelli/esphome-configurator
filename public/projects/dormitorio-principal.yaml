@@ -1,0 +1,189 @@
+esphome:
+  name: dormitorio-principal
+
+esp32:
+  board: nodemcu-32s
+  framework:
+    type: arduino
+
+# Enable logging
+logger:
+  level: VERY_VERBOSE
+    
+# Enable Home Assistant API
+api:
+  encryption:
+    key: "2vobzh2I67WhYDCjjMbOamzAetfrjrxoH6qKidXxipY="
+
+ota:
+  password: "e5b298192d8ffc5b34eb0d31b7de9f84"
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Dormitorio-Principal"
+    password: "7N3rXENh2gcq"
+
+captive_portal:
+
+output:
+  - platform: gpio
+    pin: GPIO22
+    id: _dormitorio_velador_adri
+    inverted: yes
+    
+  - platform: gpio
+    pin: GPIO23
+    id: _dormitorio_velador_maru
+    inverted: yes
+    
+  - platform: gpio
+    pin: GPIO14
+    id: _dormitorio_ventilador
+    inverted: yes
+
+switch:
+  - platform: gpio
+    pin: GPIO27
+    name: "4 Ascensor TV arriba"
+    id: _dormitorio_ascensor_arriba
+    inverted: yes
+  
+  - platform: gpio
+    pin: GPIO26
+    name: "5 Ascensor TV abajo"
+    id: _dormitorio_ascensor_abajo
+    inverted: yes
+    
+  - platform: gpio
+    pin: GPIO25
+    name: "6 - Disponible"
+    inverted: yes
+    
+  - platform: gpio
+    pin: GPIO33
+    name: "7 - Disponible"
+    inverted: yes
+    
+  - platform: gpio
+    pin: GPIO32
+    name: "8 - Disponible"
+    inverted: yes
+
+light:
+  - platform: binary
+    name: "1 Velador Adri"
+    output: _dormitorio_velador_adri
+    id: dormitorio_velador_adri
+    
+  - platform: binary
+    name: "2 Velador Maru"
+    output: _dormitorio_velador_maru
+    id: dormitorio_velador_maru
+  
+  - platform: binary
+    name: "3 Ventilador"
+    output: _dormitorio_ventilador
+    id: dormitorio_ventilador
+
+binary_sensor:
+
+  - platform: gpio
+    name: "4 Llave ventilador"
+    pin:
+      number: GPIO21
+      inverted: true
+      mode: INPUT_PULLUP
+    filters:
+      - delayed_on: 150ms
+      - delayed_off: 150ms
+    on_state:
+      then:
+        - light.toggle : dormitorio_ventilador
+
+  - platform: gpio
+    name: "5 Llave velador Adri"
+    pin:
+      number: GPIO19
+      inverted: true
+      mode: INPUT_PULLUP
+    filters:
+      - delayed_on: 150ms
+      - delayed_off: 150ms
+    on_state:
+      then:
+        - light.toggle : dormitorio_velador_adri
+
+  - platform: gpio
+    name: "6 Llave velador Maru"
+    pin:
+      number: GPIO18
+      inverted: true
+      mode: INPUT_PULLUP
+    filters:
+      - delayed_on: 150ms
+      - delayed_off: 150ms
+    on_state:
+      then:
+        - light.toggle : dormitorio_velador_maru
+
+  - platform: gpio
+    name: "7 Llave veladores"
+    pin:
+      number: GPIO17
+      inverted: true
+      mode: INPUT_PULLUP
+    filters:
+      - delayed_on: 150ms
+      - delayed_off: 150ms
+    on_state:
+      then:
+        if:
+          condition:
+            or:
+              - light.is_on: dormitorio_velador_adri
+              - light.is_on: dormitorio_velador_maru
+          then:
+            - light.turn_off: dormitorio_velador_adri
+            - light.turn_off: dormitorio_velador_maru
+          else:
+            - light.turn_on: dormitorio_velador_adri
+            - light.turn_on: dormitorio_velador_maru
+
+  - platform: gpio
+    name: "8 Llave ascensor arriba"
+    pin:
+      number: GPIO16
+      inverted: true
+      mode: INPUT_PULLUP
+    filters:
+      - delayed_on: 150ms
+      - delayed_off: 150ms
+    on_state:
+      then:
+        - switch.toggle : _dormitorio_ascensor_arriba
+
+  - platform: gpio
+    name: "9 Llave ascensor abajo"
+    pin:
+      number: GPIO4
+      inverted: true
+      mode: INPUT_PULLUP
+    filters:
+      - delayed_on: 150ms
+      - delayed_off: 150ms
+    on_state:
+      then:
+        - switch.toggle : _dormitorio_ascensor_abajo
+
+dallas:
+  - pin: GPIO13
+  
+sensor:
+  - platform: dallas
+    address: 0x6a0300a27900be28
+    name: "Temperatura Dormitorio"
+

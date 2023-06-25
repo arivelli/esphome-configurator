@@ -1,0 +1,163 @@
+esphome:
+  name: pilar
+  platform: ESP32
+  board: esp-wrover-kit
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Pilar Fallback Hotspot"
+    password: "3f!OOfc$B7#MtosRWJ"
+
+captive_portal:
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+  encryption:
+    key: "fk+EVsmWOebv3WlVzw15r6kNRPG4lTFxs+qfY1ykq4g="
+
+ota:
+  password: "qazwsx"
+
+
+
+switch:
+#Generales
+  - platform: gpio
+    pin: GPIO19
+    name: "01 Acople no EPE"
+    inverted: yes
+    
+  - platform: gpio
+    pin: GPIO18
+    name: "02 Transformador 24v"
+    inverted: yes
+    
+  - platform: gpio
+    pin: GPIO5
+    name: "03 Cooler"
+    inverted: yes
+
+#Luces
+  - platform: gpio
+    pin: GPIO17
+    name: "04 Luz huerta"
+    inverted: yes
+
+  - platform: gpio
+    pin: GPIO16
+    name: "05 Luz Generador"
+    inverted: yes
+
+#Riego
+  - platform: gpio
+    pin: GPIO4
+    name: "06 Riego Huerta"
+    inverted: yes
+
+  - platform: gpio
+    pin: GPIO0
+    name: "07 Riego Noreste"
+    inverted: yes
+    
+  - platform: gpio
+    pin: GPIO2
+    name: "08 Riego Este"
+    inverted: yes
+
+#Disponibles
+#  - platform: gpio
+#    pin: GPIO13
+#    name: "09 Disponible"
+#    inverted: yes
+
+  - platform: gpio
+    pin: GPIO14
+    name: "10 Disponible"
+    inverted: yes
+    
+  - platform: gpio
+    pin: GPIO27
+    name: "11 Disponible"
+    inverted: yes
+
+#  - platform: gpio
+#    pin: GPIO26
+#    name: "12 Disponible"
+#    inverted: yes
+
+
+#  - platform: gpio
+#    pin: GPIO25
+#    name: "13 Disponible"
+#    inverted: yes
+    
+#  - platform: gpio
+#    pin: GPIO33
+#    name: "14 Disponible"
+#    inverted: yes
+    
+#Habilitar como entradas
+dallas:
+  - pin: GPIO23
+
+# Individual sensors
+sensor:
+# IDENTIFICADO CON CINTA NEGRA
+  - platform: dallas
+    address: 0xA80300A279168428
+    name: "Temperatura tablero" 
+    
+# IDENTIFICADO SIN CINTA NEGRA    
+  - platform: dallas
+    address: 0x3d0300a2791ed328
+    name: "Temperatura exterior"
+
+#binary_sensor:
+#  - platform: gpio
+#    pin: GPIO13
+#    name: "PIR Sensor"
+#    device_class: motion
+    
+light:
+  - platform: rgb
+    name: "Pileta luces skimmer"
+    red: pileta_red
+    green: pileta_green
+    blue: pileta_blue
+
+    effects:
+      # Use default parameters:
+      - random:
+      # Customize parameters
+      - random:
+          name: "aleatorio lento"
+          transition_length: 30s
+          update_interval: 30s
+      - random:
+          name: "aleatorio rápido"
+          transition_length: 4s
+          update_interval: 5s
+          
+# Example output entry
+output:
+  - platform: ledc
+    id: pileta_red
+    pin: GPIO13
+    inverted: true
+    
+  - platform: ledc
+    id: pileta_green
+    pin: GPIO12
+    inverted: true
+    
+  - platform: ledc
+    id: pileta_blue
+    pin: GPIO14
+    inverted: true
