@@ -1,14 +1,24 @@
 # esphome-configurator
 
-This template should help get you started developing with Vue 3 in Vite.
+The main goal of this project is to fill the gap between esp32 and esphome providing you with a simple board and a piece of software to easily plug and set up your devices
 
-## Recommended IDE Setup
+## The board
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+Until now we only support nodemcu esp32s devices (Thanks Ivan for this first version). 
 
-## Customize configuration
+As you can see on the following picture the board make use of 6 rj45 ports (not ethernet ports) all with the same schema having 4 I/Os + 3.3v,5v and 2GND by jack.
 
-See [Vite Configuration Reference](https://vitejs.dev/config/).
+### RJ45 Jacks
+
+- The pins of first 4 jacks could be used as Input or Output. 
+- The IN jack could only be used for inputs.
+- Finally the AUX could be used carefully since have strapping pins (check ESP32 website for more information)
+
+![esphome configurator board preview](/board/ports.jpg)
+
+## The Application
+
+The application is just a yaml parser + web interface
 
 ## Project Setup
 
