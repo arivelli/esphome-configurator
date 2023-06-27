@@ -2,6 +2,8 @@
 
 The main goal of this project is to fill the gap between esp32 and esphome providing you with a simple board and a piece of software to easily plug and set up your devices
 
+## We expect to launch the first alpha version by end of July 2023"
+
 ## The board
 
 Until now we only support nodemcu esp32s devices (Thanks Ivan for this first version). 
