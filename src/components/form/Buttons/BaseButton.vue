@@ -15,12 +15,12 @@
       v-if="icon"
       :class="'align-middle icon_' + size"
     />
-    {{ label }}
   </Link>
 </template>
 
 <script>
-import { Link } from "@inertiajs/vue3";
+import Link from "@/components/form/Buttons/Link.vue";
+
 export default {
   components: {
     Link: Link,

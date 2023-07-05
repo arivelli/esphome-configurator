@@ -14,13 +14,13 @@ const router = createRouter({
       path: '/setup',
       name: 'setup',
       component: () => import('../views/SetupView.vue'),
-      meta: { title: 'Common Setup' }
+      meta: { title: 'Setup común (para todos los proyectos)' }
     },
     {
       path: '/projects',
       name: 'projects',
       component: () => import('../views/ProjectsView.vue'),
-      meta: { title: 'Projects List' }
+      meta: { title: 'Lista de proyectos' }
     },
     {
       path: '/projectForm/:fileName',

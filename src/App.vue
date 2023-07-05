@@ -120,8 +120,8 @@ const user = {
 }
 const navigation = [
   { name: 'Home', href: '/' },
-  { name: 'Common Setup', href: '/setup' },
-  { name: 'Projects', href: '/projects' },
+  { name: 'Setup', href: '/setup' },
+  { name: 'Proyectos', href: '/projects' },
 ]
 const userNavigation = [
   { name: 'Your Profile', href: '#' },

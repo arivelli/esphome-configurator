@@ -6,6 +6,7 @@
     size="large"
     method="post"
     :action="submit"
+    title="Guardar"
   />
 </template>
 

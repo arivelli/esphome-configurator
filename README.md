@@ -50,19 +50,25 @@ In addition to the pin configuration, the interface has a form for the common da
 ![esphome configurator common data preview](/assets/common.png)
 
 ## Project Setup
+### Requirements
+<!-- ordered list of requirements -->  
+- [git](https://git-scm.com/)
+- [nodejs](https://nodejs.org/en/) >= 14.17.0
+- [npm](https://www.npmjs.com/) >= 6.14.13
 
+
+
+### Install nodejs dependencies
 ```sh
 npm install
 ```
-
-### Compile and Hot-Reload for Development
-
+### Compile and Hot-Reload for Development on port 5174
 ```sh
 npm run dev
 ```
-
-### Compile and Minify for Production
+### Run server side on port 3000 (to read/write configuration files)
 
 ```sh
-npm run build
+node src/server.js
 ```
+
