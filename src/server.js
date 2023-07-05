@@ -45,6 +45,18 @@ app.get('/files/:fileName?', (req, res) => {
   }
 });
 
+app.post('/files/:fileName?', (req, res) => {
+  const filePath = path.join(directoryPath, req.params.fileName + '.yaml');
+  fs.writeFile(filePath, yaml.dump(req.body), (err) => {
+    if (err) {
+      console.log('Error al escribir el archivo:', err);
+      res.status(500).json({ error: 'Error al escribir el archivo' });
+    } else {
+      res.json({ success: true });
+    }
+  });
+});
+
 app.get('/setup', (req, res) => { 
   const filePath = path.join(directoryPath, 'setup.json');
   fs.readFile(filePath, 'utf8', (err, data) => {
@@ -58,6 +70,9 @@ app.get('/setup', (req, res) => {
           encryption: {
             key: '',
           }
+        },
+        logger: {
+          level: 'VERY_VERBOSE',
         },
         ota: {
           password: '',

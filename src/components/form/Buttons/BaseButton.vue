@@ -3,7 +3,7 @@
     :disabled="disabled"
     :href="href"
     :method="method"
-    :title="title"
+    :title="title ?? label"
     as="button"
     class="inline-flex justify-center items-center font-semibold text-white rounded-md shadow-sm border border-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 uppercase disabled:opacity-50 disabled:cursor-not-allowed"
     :class="classes"
@@ -41,7 +41,7 @@ export default {
   setup(props) {
     const size = props.size ? props.size : "medium";
     const color = props.color ? props.color : "dark-xima";
-    const classes = size + " " + color;
+    const classes = size + " " + color + " " + props.class ;
     return {
       href: props.href,
       method: props.method,

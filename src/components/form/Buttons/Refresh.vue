@@ -1,5 +1,5 @@
 <template>
-  <BaseButton :href="href" :label="label" icon="rotate" color="dark-blue" />
+  <BaseButton :href="href" :label="label" icon="rotate" color="dark-blue" :class="class" />
 </template>
 
 <script>

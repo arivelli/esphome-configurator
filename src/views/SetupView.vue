@@ -44,7 +44,6 @@ export default {
   created() {
     axios.get('http://localhost:3000/setup')
       .then(response => {
-        console.log(response.data);
         this.formData = response.data;
         this.loading = false;
       })

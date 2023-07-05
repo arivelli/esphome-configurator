@@ -1,4 +1,7 @@
 <template>
+  <div class="w-full text-right mb-4">
+    <Add label="Agregar" href="/projectForm/new"/>
+  </div>
   <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
     <div v-for="fileName in files" :key="fileName"
       class="relative flex items-center space-x-3 rounded-lg border border-gray-300 bg-white px-6 py-5 shadow-sm focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 hover:border-gray-400">
@@ -18,8 +21,12 @@
 
 <script>
 import axios from 'axios';
+import Add from "@/components/form/Buttons/Add.vue";
 
 export default {
+  components: {
+    Add,
+  },
   data() {
     return {
       files: [],

@@ -1,35 +1,46 @@
 <template>
   <div class="about">
-    <h1>
-      {{ $route.params.fileName }}
-    </h1>
+
     {{ formData }}
     <template v-if="formData">
-      <Card title="Project Information">
+      <h1>
+      {{ formData.esphome.friendly_name ?? fileName}}
+    </h1>
+      <Card title="Información del proyecto">
         <template v-slot:content>
-
-          <Input type="text" v-model="formData.esphome.name" size="small" label="Name" />
+          <div class="w-full flex items-end justify-between gap-3">
+            <Input type="text" v-model="formData.esphome.friendly_name" size="small" label="Nombre"  class="flex-1 "/> 
+            <Refresh @click="rebaseName" label="Actualizar nombre" size="small" class="w-64"  />
+          </div>
+          <Input type="text" v-model="formData.esphome.name" size="small" label="Nombre de identificación" />
           <Input type="text" v-model="formData.esphome.sentence" size="small" label="Description" />
-          <Select v-model="formData.esphome.platform" size="small" label="Platform" :options="platforms" />
-          <Select v-model="formData.esphome.board" size="small" label="Board" :options="boards" />
-          <Input type="text" v-model="$route.params.fileName" size="small" label="Filename" />
+          <Select v-model="formData.esp32.board" size="small" label="Board" :options="boards" />
+          <input type="hidden" v-model="formData.esp32.framework.type"  />
+          <Input type="text" v-model="fileName" size="small" label="Filename" />
+        </template>
+      </Card>
+
+      <Card title="Plataforma">
+        <template v-slot:content>
+          <Select v-model="formData.logger.level" size="small" label="Nivel de Log" :options="loggerLevels" />
+          <Input type="text" v-model="formData.api.encryption.key" size="small" label="Api encryption key" />
+          <Input type="text" v-model="formData.ota.password" size="small" label="OTA password" />
+          <input type="hidden" v-model="formData.captive_portal"  />
         </template>
       </Card>
 
       <Card title="Wifi">
         <template v-slot:content>
-
           <Input type="text" v-model="formData.wifi.ssid" size="small" label="SSID" />
           <Input type="text" v-model="formData.wifi.password" size="small" label="Password" />
           <hr class="mt-5" />
           <h3 class="my-2">Fallback access point</h3>
           <Input type="text" v-model="formData.wifi.ap.ssid" size="small" label="SSID" />
           <Input type="text" v-model="formData.wifi.ap.password" size="small" label="Password" />
-
         </template>
       </Card>
 
-      <Card v-for="(port, portIndex) in pinesSetup" :key="portIndex" :title="'Port: ' + (portIndex + 1)">
+      <Card v-for="(port, portIndex) in pinesSetup" :key="portIndex" :title="'Puerto: ' + (ports[portIndex])">
         <template v-slot:content>
           <table class="w-full">
             <thead>
@@ -61,7 +72,10 @@
         </template>
       </Card>
     </template>
+    <div class="w-full text-right">
 
+      <Submit :action="submit" />
+    </div>
   </div>
 </template>
 <script>
@@ -71,6 +85,8 @@ import Input from '../components/form/Input.vue';
 import Select from '../components/form/Select.vue';
 import Card from '../components/layout/Card.vue';
 import { stringifyQuery } from 'vue-router';
+import Refresh from '@/components/form/Buttons/Refresh.vue';
+import Submit from '@/components/form/Buttons/Submit.vue';
 
 
 export default {
@@ -78,7 +94,9 @@ export default {
     axios,
     Input,
     Select,
-    Card
+    Card,
+    Refresh,
+    Submit
   },
   data() {
     const types = [
@@ -95,26 +113,15 @@ export default {
         label: 'binary sensor / key'
       }
     ];
-    const platforms = [
+    const boards = [
       {
         value: 'ESP8266',
         label: 'ESP8266'
       },
       {
-        value: 'ESP32',
-        label: 'ESP32'
+        value: 'nodemcu-32s',
+        label: 'NodeMCU-32S'
       }
-    ];
-    const boards = [
-      {
-        value: 'esp-wrover-kit',
-        label: 'esp-wrover-kit'
-      },
-      {
-        value: 'nodemcuv2',
-        label: 'nodemcuv2'
-      }
-
     ];
     const pinesSetup = ref(
       [
@@ -133,14 +140,30 @@ export default {
         ]
       ]
     );
-
+    const ports = {
+      0: '1',
+      1: '2',
+      2: '3',
+      3: '4',
+      4: 'IN',
+      5: 'AUX'
+    }
+    const loggerLevels =  [
+      {
+        value: 'VERY_VERBOSE',
+        label: 'Very verbose'
+      },
+    ]
+    let fileName = ref(this.$route.params.fileName);
     return {
       selectedFile: null,
       formData: null,
       types,
-      platforms,
       boards,
-      pinesSetup
+      pinesSetup,
+      ports,
+      loggerLevels,
+      fileName
     };
   },
   beforeMount() {
@@ -206,10 +229,16 @@ export default {
     getId(gpio, port, position) {
       const name = this.getName(gpio);
 
-      if (name !== null) {
-        return this.slugify(this.$route.params.fileName + ' ' + port + ' ' + position + ' ' + name);
+      if (name != null) {
+        return this.slugify(this.fileName + ' ' + port + ' ' + position + ' ' + name);
       }
       return null;
+    },
+    rebaseName() {
+      const name = this.slugify(this.formData.esphome.friendly_name);
+      this.formData.esphome.name = name;
+      this.fileName = name;
+      this.formData.wifi.ap.ssid = name;
     },
     slugify(text) {
       return text
@@ -220,8 +249,17 @@ export default {
         .replace(/--+/g, "-") // Replace multiple - with single -
         .replace(/^-+/, "") // Trim - from start of text
         .replace(/-+$/, ""); // Trim - from end of text
+    },
+    submit() {
+      axios
+        .post(`http://localhost:3000/files/${this.fileName}`, this.formData)
+        .then((response) => {
+          console.log('Archivo guardado:', response);
+        })
+        .catch((error) => {
+          console.log('Error al guardar el archivo:', error);
+        });
     }
-
   }
 };
 
