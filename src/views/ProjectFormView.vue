@@ -56,15 +56,15 @@
                 <td>{{ pin }}</td>
                 <td><Select
                     :value="getType(pin)"
-
                     :searchable="true"
+                    size="small"
                     :options="types" /></td>
                 <td>
                   <Input
                     size="small"
                     :value="getName(pin)" />
                 </td>
-                <td>{{ getId(pin, portIndex, pinIndex) }}</td>
+                <td><Input size="small" :value="id(pin, portIndex, pinIndex)" :disabled="true"/></td>
               </tr>
             </tbody>
           </table>
@@ -226,14 +226,14 @@ export default {
       }
       return null;
     },
-    getId(gpio, port, position) {
+    /*getId(gpio, port, position) {
       const name = this.getName(gpio);
 
       if (name != null) {
         return this.slugify(this.fileName + ' ' + port + ' ' + position + ' ' + name);
       }
       return null;
-    },
+    },*/
     rebaseName() {
       const name = this.slugify(this.formData.esphome.friendly_name);
       this.formData.esphome.name = name;
@@ -260,6 +260,19 @@ export default {
           console.log('Error al guardar el archivo:', error);
         });
     }
+  },
+  computed: {
+    id: {
+      get: function () {
+        return (gpio, port, position) => {
+          const name = this.getName(gpio);
+          if (name != null) {
+            return this.slugify(this.fileName + ' ' + port + ' ' + position + ' ' + name);
+          }
+          return null;
+        }
+    },
+    },
   }
 };
 

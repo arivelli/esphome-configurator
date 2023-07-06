@@ -19,7 +19,9 @@ Even so, the connection of the input and output pins of the nodemcu with the rel
 
 ## The board
 
-Until now we only support nodemcu esp32s devices (Thanks [Ivan Ferreyra](https://www.instagram.com/ivanelectric90/) for this first version). 
+Until now we only support [nodemcu esp32s](https://docs.platformio.org/en/latest/boards/espressif32/nodemcu-32s.html) devices (Thanks [Ivan Ferreyra](https://www.instagram.com/ivanelectric90/) for this first version). 
+
+Feel free to contribute with other boards or even with a new version of this one. by following the general rules of the project you should be able to use the software with any board you want.
 
 As you can see on the following picture the board make use of 6 rj45 ports (not ethernet ports) all with the same schema having 4 I/Os + 3.3v,5v and 2GND by jack.
 
@@ -56,8 +58,6 @@ In addition to the pin configuration, the interface has a form for the common da
 - [nodejs](https://nodejs.org/en/) >= 14.17.0
 - [npm](https://www.npmjs.com/) >= 6.14.13
 
-
-
 ### Install nodejs dependencies
 ```sh
 npm install
@@ -67,7 +67,6 @@ npm install
 npm run dev
 ```
 ### Run server side on port 3000 (to read/write configuration files)
-
 ```sh
 node src/server.js
 ```

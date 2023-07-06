@@ -39,6 +39,13 @@ app.get('/files/:fileName?', (req, res) => {
         data = data.replace(/!secret/g, 'secret');
         const content = yaml.load(data, { schema: yaml.JSON_SCHEMA });
 
+        if (req.params.fileName == 'new') {
+          const crypto = require('crypto');
+          content.api.encryption.key = crypto.randomBytes(32).toString('hex');
+          content.ota.password = crypto.randomBytes(8).toString('hex');
+          content.wifi.ap.password = crypto.randomBytes(8).toString('hex');
+        }
+        
         res.json(content);
       }
     });

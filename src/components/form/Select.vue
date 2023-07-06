@@ -11,7 +11,7 @@
         v-bind="$attrs"
         :placeholder="placeholder"
         v-model="model"
-        class="h-7 text-sm"
+        :class="classes"
         @click="$emit('update:error', undefined)" />
       <div
         v-if="error"
@@ -74,11 +74,10 @@ export default {
   },
   data(props) {
     return {
-      errorClasses:
-        "border-red-300 text-red-900 placeholder-red-300 focus:ring-red-500 focus:border-red-500 bg-red-50",
-      classes: props.class,
-      containerClass: "w-full h-9" + props.class
-    };
+      errorClasses: "border-red-300 text-red-900 placeholder-red-300 focus:ring-red-500 focus:border-red-500 bg-red-50",
+      classes: props.size + ' ' + props.class,
+      containerClass: "w-full " + props.class
+    }
   },
   computed: {
     model: {
@@ -106,3 +105,16 @@ export default {
 </script>
 
 <style src="@/assets/multiselect.css" />
+<style scoped>
+.small {
+  @apply text-xs h-6;
+}
+
+.medium {
+  @apply text-sm h-9;
+}
+
+.large {
+  @apply text-base h-11;
+}
+</style>
