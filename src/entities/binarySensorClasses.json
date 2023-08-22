@@ -1,0 +1,114 @@
+[
+  {
+    "value": "BinarySensorDeviceClass.BATTERY",
+    "label": "Batería baja"
+  },
+  {
+    "value": "BinarySensorDeviceClass.BATTERY_CHARGING",
+    "label": "Cargando batería"
+  },
+  {
+    "value": "BinarySensorDeviceClass.CO",
+    "label": "Monóxido de carbono detectado"
+  },
+  {
+    "value": "BinarySensorDeviceClass.COLD",
+    "label": "Frío detectado"
+  },
+  {
+    "value": "BinarySensorDeviceClass.CONNECTIVITY",
+    "label": "Conectado"
+  },
+  {
+    "value": "BinarySensorDeviceClass.DOOR",
+    "label": "Puerta abierta"
+  },
+  {
+    "value": "BinarySensorDeviceClass.GARAGE_DOOR",
+    "label": "Puerta de garaje abierta"
+  },
+  {
+    "value": "BinarySensorDeviceClass.GAS",
+    "label": "Gas detectado"
+  },
+  {
+    "value": "BinarySensorDeviceClass.HEAT",
+    "label": "Calor detectado"
+  },
+  {
+    "value": "BinarySensorDeviceClass.LIGHT",
+    "label": "Luz detectada"
+  },
+  {
+    "value": "BinarySensorDeviceClass.LOCK",
+    "label": "Abierto"
+  },
+  {
+    "value": "BinarySensorDeviceClass.MOISTURE",
+    "label": "Humedad detectada"
+  },
+  {
+    "value": "BinarySensorDeviceClass.MOTION",
+    "label": "Movimiento detectado"
+  },
+  {
+    "value": "BinarySensorDeviceClass.MOVING",
+    "label": "En movimiento"
+  },
+  {
+    "value": "BinarySensorDeviceClass.OCCUPANCY",
+    "label": "Ocupado"
+  },
+  {
+    "value": "BinarySensorDeviceClass.OPENING",
+    "label": "Abierto detectado"
+  },
+  {
+    "value": "BinarySensorDeviceClass.PLUG",
+    "label": "Enchufado"
+  },
+  {
+    "value": "BinarySensorDeviceClass.POWER",
+    "label": "Encendido"
+  },
+  {
+    "value": "BinarySensorDeviceClass.PRESENCE",
+    "label": "Presencia detectada"
+  },
+  {
+    "value": "BinarySensorDeviceClass.PROBLEM",
+    "label": "Problema detectado"
+  },
+  {
+    "value": "BinarySensorDeviceClass.RUNNING",
+    "label": "Corriendo"
+  },
+  {
+    "value": "BinarySensorDeviceClass.SAFETY",
+    "label": "Inseguro detectado"
+  },
+  {
+    "value": "BinarySensorDeviceClass.SMOKE",
+    "label": "Humo detectado"
+  },
+  {
+    "value": "BinarySensorDeviceClass.SOUND",
+    "label": "Ruido detectado"
+  },
+  {
+    "value": "BinarySensorDeviceClass.TAMPER",
+    "label": "Manipulación detectada"
+  },
+  {
+    "value": "BinarySensorDeviceClass.UPDATE",
+    "label": "Actualización detectada"
+  },
+  {
+    "value": "BinarySensorDeviceClass.VIBRATION",
+    "label": "Vibración detectada"
+  },
+  {
+    "value": "BinarySensorDeviceClass.WINDOW",
+    "label": "Ventana abierta"
+  }
+]

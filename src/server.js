@@ -54,7 +54,9 @@ app.get('/files/:fileName?', (req, res) => {
 
 app.post('/files/:fileName?', (req, res) => {
   const filePath = path.join(directoryPath, req.params.fileName + '.yaml');
-  fs.writeFile(filePath, yaml.dump(req.body), (err) => {
+  let data = yaml.dump(req.body);
+  data = data.replace(/secret/g, '!secret');
+  fs.writeFile(filePath, data, (err) => {
     if (err) {
       console.log('Error al escribir el archivo:', err);
       res.status(500).json({ error: 'Error al escribir el archivo' });

@@ -1,0 +1,14 @@
+[
+  {
+    "value":"binary_sensor",
+    "label":"Sensor binario"
+  },
+  {
+    "value":"sensor",
+    "label":"Sensor"
+  },
+  {
+    "value":"output",
+    "label":"Salida"
+  }
+]

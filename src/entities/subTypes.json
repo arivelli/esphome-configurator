@@ -1,0 +1,28 @@
+{
+"binary_sensor":
+  [
+    {
+      "value":"gpio",
+      "label":"Llave de luz / Flotante (GPIO)"
+    },
+    {
+      "value":"gpio",
+      "label":"Llave de luz (GPIO)"
+    }
+  ],
+"output":
+  [
+    {
+      "value":"light",
+      "label":"Luz"
+    },
+    {
+      "value":"switch",
+      "label":"Generica (switch)"
+    },
+    {
+      "value":"heater",
+      "label":"Calefactor"
+    }
+  ]
+}

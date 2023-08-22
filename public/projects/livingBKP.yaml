@@ -1,16 +1,7 @@
 esphome:
-  friendly_name: Living
   name: living
-  project:
-    name: nodemcu-32s_v1
   platform: ESP8266
   board: nodemcuv2
-  sentence: Living comedor
-
-esp32:
-  board: nodemcu-32s
-  framework:
-    type: arduino
 
 wifi:
   ssid: !secret wifi_ssid
@@ -25,7 +16,6 @@ captive_portal:
 
 # Enable logging
 logger:
-  level: VERY_VERBOSE
 
 # Enable Home Assistant API
 api:
@@ -103,7 +93,7 @@ binary_sensor:
   - platform: gpio
     name: "Llave ventilador"
     pin:
-      number: GPIO23
+      number: D2
       inverted: true
       mode: INPUT_PULLUP
     filters:
@@ -294,17 +284,17 @@ light:
 
 output:
   - platform: gpio
-    pin: GPIO19
+    pin: D3
     id: switch_garganta
 
   - platform: gpio
-    pin: GPIO22
+    pin: D5
     id: switch_ventilador
 
   - platform: gpio
-    pin: GPIO21
+    pin: D7
     id: switch_pool2
 
   - platform: gpio
-    pin: GPIO18
+    pin: D8
     id: switch_pool1

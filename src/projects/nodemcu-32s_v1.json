@@ -1,0 +1,42 @@
+{
+  "platform":"esp32",
+  "board":"nodemcu-32s",
+  "ports": {
+    "1": [
+      "GPIO23",
+      "GPIO19",
+      "GPIO22",
+      "GPIO21"
+    ],
+    "2": [
+      "GPIO18",
+      "GPIO04",
+      "GPIO17",
+      "GPIO16"
+    ],
+    "3": [
+      "GPIO32",
+      "GPIO26",
+      "GPIO33",
+      "GPIO25"
+    ],
+    "4": [
+      "GPIO27",
+      "GPIO13",
+      "GPIO14",
+      "GPIO12"
+    ],
+    "IN": [
+      "GPIO00",
+      "GPIO05",
+      "GPIO02",
+      "GPIO15"
+    ],
+    "AUX": [
+      "GPIO34",
+      "GPIO39",
+      "GPIO35",
+      "GPIO36"
+    ]
+  }
+}

@@ -1,0 +1,112 @@
+esphome:
+  friendly_name: Lavadero
+  name: lavadero
+  project:
+    name: arivelli.nodemcu-32s_v1
+    version: 1.0.0
+esp32:
+  board: nodemcu-32s
+  framework:
+    type: arduino
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+  ap:
+    ssid: Lavadero Fallback Hotspot
+    password: 30EAgUDOl3Yk
+captive_portal: null
+logger:
+  level: VERY_VERBOSE
+api:
+  encryption:
+    key: EAXjVPSKFvdCm0FEEdPr7mJbwhfeR46ahJO+zuoNBF4=
+ota:
+  password: qazwsx
+light:
+  - platform: binary
+    name: Doble altura central
+    output: __lavadero_1_0_doble_altura_central
+    id: lavadero_1_0_doble_altura_central
+  - platform: binary
+    name: Doble altura lateral
+    output: __lavadero_1_1_doble_altura_lateral
+    id: lavadero_1_1_doble_altura_lateral
+  - platform: binary
+    name: Lavadero
+    output: __lavadero_1_2_lavadero
+    id: lavadero_1_2_lavadero
+  - platform: binary
+    name: Tanque
+    output: __lavadero_1_3_tanque
+    id: lavadero_1_3_tanque
+output:
+  - platform: gpio
+    pin: GPIO23
+    id: __lavadero_1_0_doble_altura_central
+  - platform: gpio
+    pin: GPIO19
+    id: __lavadero_1_1_doble_altura_lateral
+  - platform: gpio
+    pin: GPIO22
+    id: __lavadero_1_2_lavadero
+  - platform: gpio
+    pin: GPIO21
+    id: __lavadero_1_3_tanque
+  - platform: gpio
+    pin: GPIO18
+    id: __lavadero_2_0_caldera_termostato
+  - platform: gpio
+    pin: GPIO04
+    id: __lavadero_2_1_caldera_reset
+  - platform: gpio
+    pin: GPIO17
+    id: __lavadero_2_2_subir_persiana
+  - platform: gpio
+    pin: GPIO16
+    id: __lavadero_2_3_bajar_persiana
+switch:
+  - platform: output
+    name: Caldera termostato
+    output: __lavadero_2_0_caldera_termostato
+    id: lavadero_2_0_caldera_termostato
+  - platform: output
+    name: Caldera reset
+    output: __lavadero_2_1_caldera_reset
+    id: lavadero_2_1_caldera_reset
+  - platform: output
+    name: Subir persiana
+    output: __lavadero_2_2_subir_persiana
+    id: lavadero_2_2_subir_persiana
+  - platform: output
+    name: Bajar persiana
+    output: __lavadero_2_3_bajar_persiana
+    id: lavadero_2_3_bajar_persiana
+binary_sensor:
+  - platform: gpio
+    pin: GPIO27
+    id: lavadero_4_0_flotante_tanque_de_agua
+    name: Flotante tanque de agua
+  - platform: gpio
+    pin: GPIO13
+    id: lavadero_4_1_llave_subir_persiana
+    name: Llave subir persiana
+  - platform: gpio
+    pin: GPIO14
+    id: lavadero_4_2_llave_bajar_persiana
+    name: Llave bajar persiana
+  - platform: gpio
+    pin: GPIO00
+    id: lavadero_in_0_llave_doble_altura_central
+    name: Llave doble altura central
+  - platform: gpio
+    pin: GPIO05
+    id: lavadero_in_1_llave_doble_altura_lateral
+    name: Llave doble altura lateral
+  - platform: gpio
+    pin: GPIO02
+    id: lavadero_in_2_llave_lavadero
+    name: Llave lavadero
+  - platform: gpio
+    pin: GPIO15
+    id: lavadero_in_3_llave_tanque
+    name: Llave tanque

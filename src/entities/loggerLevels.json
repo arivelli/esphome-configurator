@@ -1,0 +1,30 @@
+[
+  {
+    "value": "NONE",
+    "label": "No"
+  },
+  {
+    "value": "ERROR",
+    "label": "Error"
+  },
+  {
+    "value": "WARN",
+    "label": "Advertencia"
+  },
+  {
+    "value": "INFO",
+    "label": "Información"
+  },
+  {
+    "value": "DEBUG (Default)",
+    "label": "Depuración"
+  },
+  {
+    "value": "VERBOSE",
+    "label": "Explícito"
+  },
+  {
+    "value": "VERY_VERBOSE",
+    "label": "Muy explícito"
+  }
+]
