@@ -27,6 +27,12 @@ const router = createRouter({
       name: 'projectForm',
       component: () => import('../views/ProjectFormView.vue'),
       meta: { title: 'Project Configuration' }
+    },
+    {
+      path: '/projectPrint/:fileName',
+      name: 'projectPrint',
+      component: () => import('../views/ProjectPrintView.vue'),
+      meta: { title: 'Project Detail' }
     }
   ]
 })

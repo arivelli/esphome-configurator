@@ -1,0 +1,168 @@
+esphome:
+  friendly_name: test
+  name: test
+  project:
+    name: arivelli.nodemcu-32s_v1
+    version: 1.0.0
+esp32:
+  board: nodemcu-32s
+  framework:
+    type: arduino
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+  ap:
+    ssid: test
+    password: 30EAgUDOl3Yk
+captive_portal: null
+logger:
+  level: VERY_VERBOSE
+api:
+  encryption:
+    key: TgFuPUyFFF8wPQYi9QYdgADY6CG6p0371egD8gMbQSU=
+ota:
+  password: qazwsx
+light: []
+output:
+  - platform: gpio
+    pin: GPIO23
+    id: __test_1_0_test_11
+  - platform: gpio
+    pin: GPIO19
+    id: __test_1_1_test_12
+  - platform: gpio
+    pin: GPIO22
+    id: __test_1_2_test_13
+  - platform: gpio
+    pin: GPIO21
+    id: __test_1_3_test_14
+  - platform: gpio
+    pin: GPIO18
+    id: __test_2_0_test_21
+  - platform: gpio
+    pin: GPIO04
+    id: __test_2_1_test_22
+  - platform: gpio
+    pin: GPIO17
+    id: __test_2_2_test_23
+  - platform: gpio
+    pin: GPIO16
+    id: __test_2_3_test_24
+  - platform: gpio
+    pin: GPIO32
+    id: __test_3_0_test_31
+  - platform: gpio
+    pin: GPIO26
+    id: __test_3_1_test_32
+  - platform: gpio
+    pin: GPIO33
+    id: __test_3_2_test_33
+  - platform: gpio
+    pin: GPIO25
+    id: __test_3_3_test_34
+  - platform: gpio
+    pin: GPIO27
+    id: __test_4_0_test_41
+  - platform: gpio
+    pin: GPIO13
+    id: __test_4_1_test_42
+  - platform: gpio
+    pin: GPIO14
+    id: __test_4_2_test_43
+  - platform: gpio
+    pin: GPIO12
+    id: __test_4_3_test_44
+  - platform: gpio
+    pin: GPIO34
+    id: __test_aux_0_test_aux1
+  - platform: gpio
+    pin: GPIO39
+    id: __test_aux_1_test_aux2
+  - platform: gpio
+    pin: GPIO35
+    id: __test_aux_2_test_aux3
+  - platform: gpio
+    pin: GPIO36
+    id: __test_aux_3_test_aux4
+switch:
+  - platform: output
+    name: test 1.1
+    output: __test_1_0_test_11
+    id: test_1_0_test_11
+  - platform: output
+    name: test 1.2
+    output: __test_1_1_test_12
+    id: test_1_1_test_12
+  - platform: output
+    name: test 1.3
+    output: __test_1_2_test_13
+    id: test_1_2_test_13
+  - platform: output
+    name: test 1.4
+    output: __test_1_3_test_14
+    id: test_1_3_test_14
+  - platform: output
+    name: test 2.1
+    output: __test_2_0_test_21
+    id: test_2_0_test_21
+  - platform: output
+    name: test 2.2
+    output: __test_2_1_test_22
+    id: test_2_1_test_22
+  - platform: output
+    name: test 2.3
+    output: __test_2_2_test_23
+    id: test_2_2_test_23
+  - platform: output
+    name: test 2.4
+    output: __test_2_3_test_24
+    id: test_2_3_test_24
+  - platform: output
+    name: test 3.1
+    output: __test_3_0_test_31
+    id: test_3_0_test_31
+  - platform: output
+    name: test 3.2
+    output: __test_3_1_test_32
+    id: test_3_1_test_32
+  - platform: output
+    name: test 3.3
+    output: __test_3_2_test_33
+    id: test_3_2_test_33
+  - platform: output
+    name: test 3.4
+    output: __test_3_3_test_34
+    id: test_3_3_test_34
+  - platform: output
+    name: test 4.1
+    output: __test_4_0_test_41
+    id: test_4_0_test_41
+  - platform: output
+    name: test 4.2
+    output: __test_4_1_test_42
+    id: test_4_1_test_42
+  - platform: output
+    name: test 4.3
+    output: __test_4_2_test_43
+    id: test_4_2_test_43
+  - platform: output
+    name: test 4.4
+    output: __test_4_3_test_44
+    id: test_4_3_test_44
+  - platform: output
+    name: test aux.1
+    output: __test_aux_0_test_aux1
+    id: test_aux_0_test_aux1
+  - platform: output
+    name: test aux.2
+    output: __test_aux_1_test_aux2
+    id: test_aux_1_test_aux2
+  - platform: output
+    name: test aux.3
+    output: __test_aux_2_test_aux3
+    id: test_aux_2_test_aux3
+  - platform: output
+    name: test aux.4
+    output: __test_aux_3_test_aux4
+    id: test_aux_3_test_aux4
+binary_sensor: []

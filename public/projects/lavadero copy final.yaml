@@ -215,10 +215,10 @@ cover:
     device_class: curtain
     open_action:
       - switch.turn_on: lavadero_2_2_subir_persiana
-    open_duration: 1min
+    open_duration: 2.1min
     close_action:
       - switch.turn_on: lavadero_2_3_bajar_persiana
-    close_duration: 1min
+    close_duration: 2min
     stop_action:
       - switch.turn_off: lavadero_2_2_subir_persiana
       - switch.turn_off: lavadero_2_3_bajar_persiana

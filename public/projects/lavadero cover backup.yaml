@@ -25,12 +25,12 @@ ota:
 light:
   - platform: binary
     name: Luz doble altura central
-    output: __lavadero_2_0_luz_doble_altura_central
-    id: lavadero_2_0_luz_doble_altura_central
+    output: __lavadero_1_0_luz_doble_altura_central
+    id: lavadero_1_0_luz_doble_altura_central
   - platform: binary
     name: Luz doble altura lateral
-    output: __lavadero_2_1_luz_doble_altura_lateral
-    id: lavadero_2_1_luz_doble_altura_lateral
+    output: __lavadero_1_1_luz_doble_altura_lateral
+    id: lavadero_1_1_luz_doble_altura_lateral
   - platform: binary
     name: Luz Lavadero
     output: __lavadero_1_2_luz_lavadero
@@ -41,12 +41,12 @@ light:
     id: lavadero_1_3_luz_tanque
 output:
   - platform: gpio
-    pin: GPIO18
-    id: __lavadero_2_0_luz_doble_altura_central
+    pin: GPIO23
+    id: __lavadero_1_0_luz_doble_altura_central
     inverted: true
   - platform: gpio
-    pin: GPIO04
-    id: __lavadero_2_1_luz_doble_altura_lateral
+    pin: GPIO19
+    id: __lavadero_1_1_luz_doble_altura_lateral
     inverted: true
   - platform: gpio
     pin: GPIO22
@@ -57,12 +57,12 @@ output:
     id: __lavadero_1_3_luz_tanque
     inverted: true
   - platform: gpio
-    pin: GPIO23
-    id: __lavadero_1_0_caldera_termostato
+    pin: GPIO18
+    id: __lavadero_2_0_caldera_termostato
     inverted: true
   - platform: gpio
-    pin: GPIO19
-    id: __lavadero_1_1_caldera_reset
+    pin: GPIO04
+    id: __lavadero_2_1_caldera_reset
     inverted: true
   - platform: gpio
     pin: GPIO17
@@ -75,12 +75,12 @@ output:
 switch:
   - platform: output
     name: Caldera termostato
-    output: __lavadero_1_0_caldera_termostato
-    id: lavadero_1_0_caldera_termostato
+    output: __lavadero_2_0_caldera_termostato
+    id: lavadero_2_0_caldera_termostato
   - platform: output
     name: Caldera reset
-    output: __lavadero_1_1_caldera_reset
-    id: lavadero_1_1_caldera_reset
+    output: __lavadero_2_1_caldera_reset
+    id: lavadero_2_1_caldera_reset
   - platform: output
     name: Subir persiana
     output: __lavadero_2_2_subir_persiana
@@ -146,7 +146,7 @@ binary_sensor:
       - delayed_off: 150ms
     on_press:
       then:
-        - light.toggle: lavadero_2_0_luz_doble_altura_central
+        - light.toggle: lavadero_1_0_luz_doble_altura_central
   - platform: gpio
     id: lavadero_aux_1_llave_doble_altura_bajar_persiana
     name: Llave doble altura bajar persiana
@@ -207,7 +207,7 @@ binary_sensor:
       - delayed_off: 150ms
     on_press:
       then:
-        - light.toggle: lavadero_2_1_luz_doble_altura_lateral
+        - light.toggle: lavadero_1_1_luz_doble_altura_lateral
 cover:
   - platform: time_based
     id: lavadero_persiana_doble_altura
@@ -215,10 +215,10 @@ cover:
     device_class: curtain
     open_action:
       - switch.turn_on: lavadero_2_2_subir_persiana
-    open_duration: 1min
+    open_duration: 2.1min
     close_action:
       - switch.turn_on: lavadero_2_3_bajar_persiana
-    close_duration: 1min
+    close_duration: 2min
     stop_action:
       - switch.turn_off: lavadero_2_2_subir_persiana
       - switch.turn_off: lavadero_2_3_bajar_persiana

@@ -1,79 +1,38 @@
 <template>
   <div class="about">
-    {{ formData }}
     <template v-if="formData">
       <h1>
         {{ formData.esphome.friendly_name ?? fileName }}
       </h1>
-      <Card title="Información del proyecto">
-        <template v-slot:content>
-          <Select v-model="formData.esphome.project.name" size="small" label="Tipo de proyecto" :options="projects" />
-          <div class="w-full flex items-end justify-between gap-3">
-            <Input type="text" v-model="formData.esphome.friendly_name" size="small" label="Nombre" class="flex-1 " />
-            <Refresh @click="rebaseName" label="Actualizar nombre" size="small" class="w-64" />
-          </div>
-          <Input type="text" v-model="formData.esphome.name" size="small" label="Nombre de identificación" />
-          <Input type="text" v-model="formData.esphome.sentence" size="small" label="Descripción" />
-          <Input type="text" v-model="formData.esphome.board" size="small" label="Board" :disabled="true" />
-          <Input type="text" v-model="formData.esphome.platform" size="small" label="Platform" :disabled="true" />
-          <Input type="text" v-model="fileName" size="small" label="Filename" />
-        </template>
-      </Card>
 
-      <Card title="Plataforma">
-        <template v-slot:content>
-          <Select v-model="formData.logger.level" size="small" label="Nivel de Log" :options="loggerLevels" />
-          <Input type="text" v-model="formData.api.encryption.key" size="small" label="Api encryption key" />
-          <Input type="text" v-model="formData.ota.password" size="small" label="OTA password" />
-          <input type="hidden" v-model="formData.captive_portal" />
-        </template>
-      </Card>
-
-      <Card title="Wifi">
-        <template v-slot:content>
-          <Input type="text" v-model="formData.wifi.ssid" size="small" label="SSID" />
-          <Input type="text" v-model="formData.wifi.password" size="small" label="Password" />
-          <hr class="mt-5" />
-          <h3 class="my-2">Fallback access point</h3>
-          <Input type="text" v-model="formData.wifi.ap.ssid" size="small" label="SSID" />
-          <Input type="text" v-model="formData.wifi.ap.password" size="small" label="Password" />
-        </template>
-      </Card>
 
       <Card v-for="(port, portIndex) in ports" :key="portIndex" :title="'Puerto '+portIndex+': ' + (ports[portIndex])">
         <template v-slot:content>
           <table class="w-full">
             <thead>
               <tr>
-                <th>GPIO</th>
+                <th class="w-10">GPIO</th>
+                <th class="w-32">Color</th>
                 <th class="w-1/4">Tipo</th>
-                <th class="w-1/4">SubTipo</th>
+                
                 <th class="w-1/4">Nombre</th>
                 <th class="w-1/4">ID</th>
-                <th class="w-10">Extra</th>
               </tr>
             </thead>
             <tbody>
               <tr v-for="(pin, pinIndex) in port" :key="portIndex_pinIndex">
                 <th class="text-sm" :class="'bg'+pinIndex">{{ pin }}</th>
+                <th class="text-sm" :class="'bg'+pinIndex">{{ color[pinIndex] }}</th>
                 <td><Select
                     v-model="pinesData[pin].type"
                     :searchable="true"
                     size="small"
                     :options="types" /></td>
-                <td><Select
-                    v-model="pinesData[pin].subType"
-                    :searchable="true"
-                    size="small"
-                    :options="subTypes[pinesData[pin].type]" /></td>
+
                 <td>
-                  <Input
-                    v-model="pinesData[pin].data.name"
-                    @change="pinesData[pin].data.id = id(portIndex, pinIndex, pinesData[pin].data.name)"
-                    size="small" />
+                  {{ pinesData[pin].data.name }}
                 </td>
-                <td><Input size="small" v-model="pinesData[pin].data.id" :disabled="true" /></td>
-                <td><textarea class="w-full pl-3 py-2.5 rounded-lg overflow-hidden text-sm text-litepie-secondary-700 placeholder-litepie-secondary-400 transition-colors bg-white border border-litepie-secondary-300 focus:border-litepie-primary-300 focus:ring focus:ring-litepie-primary-500 focus:ring-opacity-10 focus:outline-none dark:bg-litepie-secondary-800 dark:border-litepie-secondary-700 dark:text-litepie-secondary-100 dark:placeholder-litepie-secondary-500 dark:focus:border-litepie-primary-500 dark:focus:ring-opacity-20 border-gray-300 disabled:bg-gray-100" v-model="pinesData[pin].data.extra" /></td>
+                <td>{{ pinesData[pin].data.id }}</td>
               </tr>
             </tbody>
           </table>
@@ -125,7 +84,7 @@ export default {
     let fileName = ref(this.$route.params.fileName);
     let pinesData = {};
     let ports = project.ports;
-
+    const color = ['marron', 'blanco marron', 'verde', 'blanco azul'];
     return {
       selectedFile: null,
       formData: null,
@@ -136,7 +95,8 @@ export default {
       ports,
       loggerLevels,
       types,
-      subTypes
+      subTypes,
+      color
     };
   },
   beforeMount() {

@@ -27,16 +27,16 @@
       "GPIO12"
     ],
     "IN": [
-      "GPIO00",
-      "GPIO05",
-      "GPIO02",
-      "GPIO15"
+      "GPIO34",
+      "GPIO35",
+      "GPIO36",
+      "GPIO39"
     ],
     "AUX": [
-      "GPIO34",
-      "GPIO39",
-      "GPIO35",
-      "GPIO36"
+      "GPIO00",
+      "GPIO02",
+      "GPIO05",
+      "GPIO15"
     ]
   }
 }
