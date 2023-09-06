@@ -103,8 +103,8 @@ binary_sensor:
       - delayed_on: 150ms
       - delayed_off: 150ms
   - platform: gpio
-    id: lavadero_4_1_llave_luz_tanque_de_agua
-    name: Llave luz tanque de agua
+    id: lavadero_4_1_llave_luz_tanque_de_agua_vacio
+    name: Llave luz tanque de agua vacío
     pin:
       number: GPIO13
       inverted: true
@@ -132,6 +132,20 @@ binary_sensor:
     on_press:
       then:
         - light.toggle: lavadero_1_2_luz_lavadero
+
+  - platform: gpio
+    id: lavadero_4_0_flotante_tanque_de_agua_lleno
+    name: Flotante tanque de agua lleno
+    pin:
+      number: GPIO12
+      inverted: true
+      mode:
+        input: true
+        pullup: true
+    filters:
+      - delayed_on: 150ms
+      - delayed_off: 150ms
+
   - platform: gpio
     id: lavadero_aux_0_llave_doble_altura_luz_central
     name: Llave doble altura luz central
@@ -215,10 +229,10 @@ cover:
     device_class: curtain
     open_action:
       - switch.turn_on: lavadero_2_2_subir_persiana
-    open_duration: 2.1min
+    open_duration: 53sec
     close_action:
       - switch.turn_on: lavadero_2_3_bajar_persiana
-    close_duration: 2min
+    close_duration: 53sec
     stop_action:
       - switch.turn_off: lavadero_2_2_subir_persiana
       - switch.turn_off: lavadero_2_3_bajar_persiana

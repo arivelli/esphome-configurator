@@ -1,21 +1,20 @@
 <template>
   <div class="about">
-    {{ formData }}
     <template v-if="formData">
-      <h1>
+      <!-- Highlight h1 title-->
+      <h1 class="text-3xl">
         {{ formData.esphome.friendly_name ?? fileName }}
       </h1>
       <Card title="Información del proyecto">
         <template v-slot:content>
           <Select v-model="formData.esphome.project.name" size="small" label="Tipo de proyecto" :options="projects" />
+          <input type="hidden" v-model="formData.esphome.project.version" />
           <div class="w-full flex items-end justify-between gap-3">
             <Input type="text" v-model="formData.esphome.friendly_name" size="small" label="Nombre" class="flex-1 " />
             <Refresh @click="rebaseName" label="Actualizar nombre" size="small" class="w-64" />
           </div>
           <Input type="text" v-model="formData.esphome.name" size="small" label="Nombre de identificación" />
-          <Input type="text" v-model="formData.esphome.sentence" size="small" label="Descripción" />
-          <Input type="text" v-model="formData.esphome.board" size="small" label="Board" :disabled="true" />
-          <Input type="text" v-model="formData.esphome.platform" size="small" label="Platform" :disabled="true" />
+          <Input type="text" v-model="formData.esp32.board" size="small" label="Board" :disabled="true" />
           <Input type="text" v-model="fileName" size="small" label="Filename" />
         </template>
       </Card>
@@ -40,22 +39,22 @@
         </template>
       </Card>
 
-      <Card v-for="(port, portIndex) in ports" :key="portIndex" :title="'Puerto '+portIndex+': ' + (ports[portIndex])">
+      <Card v-for="(port, portIndex) in ports" :key="'port_' + portIndex" :title="'Puerto '+portIndex+': ' + (ports[portIndex])"  >
         <template v-slot:content>
           <table class="w-full">
             <thead>
               <tr>
-                <th>GPIO</th>
-                <th class="w-1/4">Tipo</th>
-                <th class="w-1/4">SubTipo</th>
-                <th class="w-1/4">Nombre</th>
-                <th class="w-1/4">ID</th>
-                <th class="w-10">Extra</th>
+                <th class="w-13">GPIO</th>
+                <th class="w-1/6">Tipo</th>
+                <th class="w-1/6">SubTipo</th>
+                <th class="w-1/6">Nombre</th>
+                <th class="w-1/6">ID</th>
+                <th>Extra</th>
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(pin, pinIndex) in port" :key="portIndex_pinIndex">
-                <th class="text-sm" :class="'bg'+pinIndex">{{ pin }}</th>
+              <tr v-for="(pin, pinIndex) in port" :key="'pin_' + portIndex + '_' + pinIndex" :class="'bg'+pinIndex">
+                <th class="text-sm">{{ pin }}</th>
                 <td><Select
                     v-model="pinesData[pin].type"
                     :searchable="true"
@@ -73,7 +72,14 @@
                     size="small" />
                 </td>
                 <td><Input size="small" v-model="pinesData[pin].data.id" :disabled="true" /></td>
-                <td><textarea class="w-full pl-3 py-2.5 rounded-lg overflow-hidden text-sm text-litepie-secondary-700 placeholder-litepie-secondary-400 transition-colors bg-white border border-litepie-secondary-300 focus:border-litepie-primary-300 focus:ring focus:ring-litepie-primary-500 focus:ring-opacity-10 focus:outline-none dark:bg-litepie-secondary-800 dark:border-litepie-secondary-700 dark:text-litepie-secondary-100 dark:placeholder-litepie-secondary-500 dark:focus:border-litepie-primary-500 dark:focus:ring-opacity-20 border-gray-300 disabled:bg-gray-100" v-model="pinesData[pin].data.extra" /></td>
+                <td><textarea class="w-full p-1 rounded-lg overflow-hidden text-xs text-litepie-secondary-700 
+                  placeholder-litepie-secondary-400 transition-colors bg-white border border-litepie-secondary-300 
+                  focus:border-litepie-primary-300 focus:ring focus:ring-litepie-primary-500 focus:ring-opacity-10 
+                  focus:outline-none focus:fixed focus:inset-0  focus:z-50 focus:w-auto focus:m-20 focus-text-2xl 
+                  focus:font-bold focus:font-mono focus:p-3
+                  dark:bg-litepie-secondary-800 dark:border-litepie-secondary-700 dark:text-litepie-secondary-100 
+                  dark:placeholder-litepie-secondary-500 dark:focus:border-litepie-primary-500 dark:focus:ring-opacity-20 border-gray-300
+                   disabled:bg-gray-100" v-model="pinesData[pin].data.extra" /></td>
               </tr>
             </tbody>
           </table>
@@ -208,36 +214,39 @@ export default {
                   this.pinesData[pin].data.id = element.id;
                 }
                 
-              }
-              if ((key == 'light') || (key == 'switch')) {
-                this.pinesData[pin].subType = key;
-                this.pinesData[pin].data.name = element.name;
-                this.pinesData[pin].data.id = element.id;
-                this.pinesData[pin].data.platform = 'output';
-              } else {
-                this.pinesData[pin].type = key;
-                
-              }
-              if (key == 'binary_sensor') {
-                this.pinesData[pin].subType = element.platform;
-                this.pinesData[pin].data.name = element.name;
-              }
-              if (typeof element.on_click !== 'undefined') {
-                let extra = {};
-                //add to extra all the keys but filters, id, name, platform, pin
-                Object.keys(element).forEach((key) => {
-                  if (['filters', 'id', 'name', 'platform', 'pin'].indexOf(key) == -1) {
-                    extra[key] = element[key];
-                  }
-                });
-                this.pinesData[pin].data.extra = yaml.dump(extra);
+                if ((key == 'light') || (key == 'switch')) {
+                  this.pinesData[pin].subType = key;
+                  this.pinesData[pin].data.name = element.name;
+                  this.pinesData[pin].data.id = element.id;
+                  this.pinesData[pin].data.platform = 'output';
+                } else {
+                  this.pinesData[pin].type = key;
+                  
+                }
+                if (key == 'binary_sensor') {
+                  this.pinesData[pin].subType = element.platform;
+                  this.pinesData[pin].data.name = element.name;
+                }
+                if (
+                  (typeof element.on_press !== 'undefined') ||
+                  (typeof element.on_click !== 'undefined')
+                 ) {
+                  let extra = {};
+                  //add to extra all the keys but filters, id, name, platform, pin
+                  Object.keys(element).forEach((key) => {
+                    if (['filters', 'id', 'name', 'platform', 'pin'].indexOf(key) == -1) {
+                      extra[key] = element[key];
+                    }
+                  });
+                  this.pinesData[pin].data.extra = yaml.dump(extra);
+                }
                 //console.log(element);
               }
             }
           });
         }
       });
-      console.log(this.pinesData);
+      //console.log(this.pinesData);
     },
     getGpioFromOutputId(id) {
       const gpio = this.formData.output.find((output) => {

@@ -3,10 +3,11 @@
     <label
       v-if="label"
       class="block text-sm font-medium text-gray-700 mb-1"
-      :for="id">{{ label }}:
+      :for="elementId">{{ label }}:
     </label>
     <div class="relative">
       <input
+        :id="elementId"
         ref="input"
         v-bind="$attrs"
         :class="classes"
@@ -53,10 +54,12 @@ export default {
     }
   },
   data() {
+    const elementId = this.id ? this.id : Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
     return {
       errorClasses:
         "border-red-300 text-red-900 placeholder-red-300 focus:ring-red-500 focus:border-red-500 bg-red-50",
       errorMessage: this.error,
+      elementId:elementId
     };
   },
   methods: {
