@@ -1,0 +1,150 @@
+alias: Regar Jardín
+sequence:
+  - service: input_text.set_value
+    data:
+      entity_id: input_text.riego_mensaje_estado
+      value: Iniciando
+  - service: system_log.write
+    data:
+      message: >-
+        Riego desde {{states['input_select.riego_desde'].state}} ({{
+        states('input_number.tiempo_de_riego') | int }} minutos)
+      level: info
+  - variables:
+      riego_desde_entity: "{{ mapper[states['input_select.riego_desde'].state] }}"
+  - type: turn_on
+    device_id: 4ab0c802b21d40ccc20f56de9456ded4
+    entity_id: 6134ee380c4f2f1feaf5311d05f38e60
+    domain: switch
+  - type: turn_on
+    device_id: 4ab0c802b21d40ccc20f56de9456ded4
+    entity_id: e0bc2e8e46b78fa5d123d63ede55734c
+    domain: switch
+  - type: turn_on
+    device_id: 4ab0c802b21d40ccc20f56de9456ded4
+    entity_id: ac10cb4a04ebf60eb2a0e7f701d290da
+    domain: switch
+  - type: turn_on
+    device_id: 4ab0c802b21d40ccc20f56de9456ded4
+    entity_id: switch.5_2_entrada_pileta
+    domain: switch
+  - choose:
+      - conditions:
+          - condition: state
+            entity_id: input_select.riego_desde
+            state: Pileta
+        sequence:
+          - service: switch.turn_on
+            entity_id: switch.5_1_entrada_coprol
+          - delay: "5"
+          - service: switch.turn_off
+            entity_id: switch.5_1_entrada_coprol
+    default: []
+  - delay: "5"
+  - alias: Encender Bomba
+    service: switch.turn_on
+    data:
+      entity_id: "{{riego_desde_entity}}"
+  - service: input_text.set_value
+    data:
+      entity_id: input_text.riego_mensaje_estado
+      value: 1 Interior
+  - alias: Encender Timer Interior
+    service: timer.start
+    data:
+      entity_id: timer.riego_timer
+      duration: "{{ states('input_number.tiempo_de_riego') | multiply(60) | int }}"
+  - delay: "{{ states('input_number.tiempo_de_riego') | multiply(60) | int }}"
+  - type: turn_on
+    device_id: 4ab0c802b21d40ccc20f56de9456ded4
+    entity_id: switch.1_2_pozo_riego_exterior
+    domain: switch
+  - type: turn_on
+    device_id: 4ab0c802b21d40ccc20f56de9456ded4
+    entity_id: switch.2_2_pileta_riego_exterior
+    domain: switch
+  - delay: "5"
+  - type: turn_off
+    device_id: 4ab0c802b21d40ccc20f56de9456ded4
+    entity_id: switch.1_1_pozo_riego_interior
+    domain: switch
+  - type: turn_off
+    device_id: 4ab0c802b21d40ccc20f56de9456ded4
+    entity_id: switch.2_1_pileta_riego_interior
+    domain: switch
+  - service: input_text.set_value
+    data:
+      entity_id: input_text.riego_mensaje_estado
+      value: 2 Exterior
+  - alias: Encender Timer Exterior
+    service: timer.start
+    data:
+      entity_id: timer.riego_timer
+      duration: "{{ states('input_number.tiempo_de_riego') | multiply(60) | int }}"
+  - delay: "{{ states('input_number.tiempo_de_riego') | multiply(60) | int }}"
+  - type: turn_on
+    device_id: 4ab0c802b21d40ccc20f56de9456ded4
+    entity_id: switch.1_3_pozo_riego_oeste
+    domain: switch
+  - type: turn_on
+    device_id: 4ab0c802b21d40ccc20f56de9456ded4
+    entity_id: switch.2_3_pileta_riego_oeste
+    domain: switch
+  - delay: "5"
+  - type: turn_off
+    device_id: 4ab0c802b21d40ccc20f56de9456ded4
+    entity_id: switch.1_2_pozo_riego_exterior
+    domain: switch
+  - type: turn_off
+    device_id: 4ab0c802b21d40ccc20f56de9456ded4
+    entity_id: switch.2_2_pileta_riego_exterior
+    domain: switch
+  - service: input_text.set_value
+    data:
+      entity_id: input_text.riego_mensaje_estado
+      value: 3 Oeste
+  - alias: Encender Timer Oeste
+    service: timer.start
+    data:
+      entity_id: timer.riego_timer
+      duration: "{{ states('input_number.tiempo_de_riego') | multiply(60) | int }}"
+  - delay: "{{ states('input_number.tiempo_de_riego') | multiply(60) | int }}"
+  - service: input_text.set_value
+    data:
+      entity_id: input_text.riego_mensaje_estado
+      value: Apagando
+  - alias: Apagar Bomba
+    service: switch.turn_off
+    data:
+      entity_id: "{{riego_desde_entity}}"
+  - delay: "10"
+  - type: turn_off
+    device_id: 4ab0c802b21d40ccc20f56de9456ded4
+    entity_id: switch.1_3_pozo_riego_oeste
+    domain: switch
+  - type: turn_off
+    device_id: 4ab0c802b21d40ccc20f56de9456ded4
+    entity_id: switch.2_3_pileta_riego_oeste
+    domain: switch
+  - type: turn_off
+    device_id: 4ab0c802b21d40ccc20f56de9456ded4
+    entity_id: switch.5_2_entrada_pileta
+    domain: switch
+  - type: turn_off
+    device_id: 4ab0c802b21d40ccc20f56de9456ded4
+    entity_id: switch.3_1_transformador_24v
+    domain: switch
+  - service: smart_irrigation.smart_irrigation_reset_bucket
+    data: {}
+  - service: input_text.set_value
+    data:
+      entity_id: input_text.riego_mensaje_estado
+      value: Apagado
+mode: single
+icon: mdi:sprinkler-variant
+variables:
+  riego_desde_entity: switch.4_1_bomba_perforacion
+  riego_mensaje: Apagado
+  mapper:
+    Pileta: switch.4_2_bomba_riego_pileta
+    Pozo: switch.4_1_bomba_perforacion

@@ -1,0 +1,187 @@
+esphome:
+  friendly_name: Pileta
+  name: pileta2
+  project:
+    name: arivelli.nodemcu-32s_v1
+    version: 1.0.0
+esp32:
+  board: nodemcu-32s
+  framework:
+    type: arduino
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+  ap:
+    ssid: pileta
+    password: 30EAgUDOl3Yk
+captive_portal: null
+logger:
+  level: VERBOSE
+api:
+  encryption:
+    key: ASn7JDtsTecnCuTXcbSfp7VS5kvDZ/N26fmOYHJv2VM=
+ota:
+  password: qazwsx
+output:
+  - platform: gpio
+    pin: GPIO23
+    id: __pileta2_1_0__pozo_riego_oeste
+    inverted: true
+  - platform: gpio
+    pin: GPIO19
+    id: __pileta2_1_1__pozo_riego_interior
+    inverted: true
+  - platform: gpio
+    pin: GPIO22
+    id: __pileta2_1_2__pozo_riego_exterior
+    inverted: true
+  - platform: gpio
+    pin: GPIO21
+    id: __pileta2_1_3__pozo_llenado_pileta
+    inverted: true
+  - platform: gpio
+    pin: GPIO18
+    id: __pileta2_2_0__pileta_riego_oeste
+    inverted: true
+  - platform: gpio
+    pin: GPIO04
+    id: __pileta2_2_1__pileta_riego_interior
+    inverted: true
+  - platform: gpio
+    pin: GPIO17
+    id: __pileta2_2_2__pileta_riego_exterior
+    inverted: true
+  - platform: gpio
+    pin: GPIO16
+    id: __pileta2_2_3__pileta_llenado_pileta
+    inverted: true
+  - platform: gpio
+    pin: GPIO32
+    id: __pileta2_3_0__transformador_24v
+    inverted: true
+  - platform: gpio
+    pin: GPIO26
+    id: __pileta2_3_1__bomba_pozo
+    inverted: true
+  - platform: gpio
+    pin: GPIO33
+    id: __pileta2_3_2__bomba_riego_pileta
+    inverted: true
+  - platform: gpio
+    pin: GPIO25
+    id: __pileta2_3_3__bomba_filtro_pileta
+    inverted: true
+  - platform: gpio
+    pin: GPIO27
+    id: __pileta2_4_0__entrada_coprol
+    inverted: true
+  - platform: gpio
+    pin: GPIO13
+    id: __pileta2_4_1__entrada_pileta
+    inverted: true
+  - platform: gpio
+    pin: GPIO14
+    id: __pileta2_4_2__pozo_a_coprol_ojo
+    inverted: true
+  - platform: gpio
+    pin: GPIO12
+    id: __pileta2_4_3___
+    inverted: true
+  - platform: gpio
+    pin: GPIO00
+    id: __pileta2_aux_0__robot_barrefondo
+    inverted: true
+  - platform: gpio
+    pin: GPIO02
+    id: __pileta2_aux_1__bola_pileta
+    inverted: true
+  - platform: gpio
+    pin: GPIO05
+    id: __pileta2_aux_2__reflectores_pileta
+    inverted: true
+  - platform: gpio
+    pin: GPIO15
+    id: __pileta2_aux_3___
+    inverted: true
+switch:
+  - platform: output
+    name: Pozo Riego Oeste
+    output: __pileta2_1_0__pozo_riego_oeste
+    id: pileta2_1_0__pozo_riego_oeste
+  - platform: output
+    name: Pozo Riego Interior
+    output: __pileta2_1_1__pozo_riego_interior
+    id: pileta2_1_1__pozo_riego_interior
+  - platform: output
+    name: Pozo Riego Exterior
+    output: __pileta2_1_2__pozo_riego_exterior
+    id: pileta2_1_2__pozo_riego_exterior
+  - platform: output
+    name: Pozo Llenado Pileta
+    output: __pileta2_1_3__pozo_llenado_pileta
+    id: pileta2_1_3__pozo_llenado_pileta
+  - platform: output
+    name: Pileta Riego Oeste
+    output: __pileta2_2_0__pileta_riego_oeste
+    id: pileta2_2_0__pileta_riego_oeste
+  - platform: output
+    name: Pileta Riego Interior
+    output: __pileta2_2_1__pileta_riego_interior
+    id: pileta2_2_1__pileta_riego_interior
+  - platform: output
+    name: Pileta Riego Exterior
+    output: __pileta2_2_2__pileta_riego_exterior
+    id: pileta2_2_2__pileta_riego_exterior
+  - platform: output
+    name: Pileta Llenado Pileta
+    output: __pileta2_2_3__pileta_llenado_pileta
+    id: pileta2_2_3__pileta_llenado_pileta
+  - platform: output
+    name: Transformador 24v
+    output: __pileta2_3_0__transformador_24v
+    id: pileta2_3_0__transformador_24v
+  - platform: output
+    name: Bomba Pozo
+    output: __pileta2_3_1__bomba_pozo
+    id: pileta2_3_1__bomba_pozo
+  - platform: output
+    name: Bomba Riego Pileta
+    output: __pileta2_3_2__bomba_riego_pileta
+    id: pileta2_3_2__bomba_riego_pileta
+  - platform: output
+    name: Bomba Filtro Pileta
+    output: __pileta2_3_3__bomba_filtro_pileta
+    id: pileta2_3_3__bomba_filtro_pileta
+  - platform: output
+    name: Entrada Coprol
+    output: __pileta2_4_0__entrada_coprol
+    id: pileta2_4_0__entrada_coprol
+  - platform: output
+    name: Entrada Pileta
+    output: __pileta2_4_1__entrada_pileta
+    id: pileta2_4_1__entrada_pileta
+  - platform: output
+    name: Pozo a Coprol (Ojo)
+    output: __pileta2_4_2__pozo_a_coprol_ojo
+    id: pileta2_4_2__pozo_a_coprol_ojo
+  - platform: output
+    name: '--'
+    output: __pileta2_4_3___
+    id: pileta2_4_3___
+  - platform: output
+    name: Robot Barrefondo
+    output: __pileta2_aux_0__robot_barrefondo
+    id: pileta2_aux_0__robot_barrefondo
+  - platform: output
+    name: '--'
+    output: __pileta2_aux_3___
+    id: pileta2_aux_3___
+light:
+  - platform: binary
+    name: Bola Pileta
+    output: __pileta2_aux_1__bola_pileta
+    id: pileta2_aux_1__bola_pileta
+  - platform: binary
+    name: Reflectores Pileta
+    output: __pileta2_aux_2__reflectores_pileta
+    id: pileta2_aux_2__reflectores_pileta

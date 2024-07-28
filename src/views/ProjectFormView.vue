@@ -219,14 +219,27 @@ export default {
                   this.pinesData[pin].data.name = element.name;
                   this.pinesData[pin].data.id = element.id;
                   this.pinesData[pin].data.platform = 'output';
+                  //this.pinesData[pin].data.inverted = true;
                 } else {
                   this.pinesData[pin].type = key;
                   
                 }
-                if (key == 'binary_sensor') {
+                if ((key == 'binary_sensor') || (key == 'sensor')) {
                   this.pinesData[pin].subType = element.platform;
                   this.pinesData[pin].data.name = element.name;
                 }
+
+                if (key == 'dallas') {
+                  this.pinesData[pin].type = 'sensor';
+                  this.pinesData[pin].subType = key;
+                  //Extraer el nombre desde el id y poniendo sólo el primer caracter en mayusculas
+                  this.pinesData[pin].data.name = element.id.split('__')[1]
+                    .replace(/_/g, ' ')
+                    .replace(/-/g, ' ')
+                    .replace(/\w\S*/g, (w) => (w.replace(/^\w/, (c) => c.toUpperCase())));
+                    ;
+                }
+                
                 if (
                   (typeof element.on_press !== 'undefined') ||
                   (typeof element.on_click !== 'undefined')
@@ -275,6 +288,8 @@ export default {
       this.formData['light'] = [];
       this.formData['switch'] = [];
       this.formData['binary_sensor'] = [];
+      this.formData['dallas'] = [];
+      this.formData['sensor'] = [];
       Object.keys(this.pinesData).forEach((pin) => {
         let extra = {};
           if(typeof this.pinesData[pin].data.extra !== 'undefined') {
@@ -291,6 +306,7 @@ export default {
             platform: 'gpio',
             pin: pin,
             id: '__' + this.pinesData[pin].data.id,
+            //inverted: true,
             ...extra
           });
           if ((this.pinesData[pin].subType == 'light') || (this.pinesData[pin].subType == 'switch')) {
@@ -317,7 +333,7 @@ export default {
               inverted: true,
               mode: {
                 input: true,
-                pullup: true,
+                pullup: (pin != 'GPIO39' && pin != 'GPIO34' && pin != 'GPIO35' && pin != 'GPIO36'),
               },
             },
             filters: [
@@ -326,9 +342,49 @@ export default {
             ],
             ...extra
           });
+        }
 
+        if (
+          (this.pinesData[pin].type == 'sensor')
+          && (this.pinesData[pin].data.name != '')
+        ) {
+          if (this.pinesData[pin].subType === 'dallas') {
+            this.formData['dallas'].push({
+              pin: pin,
+              id: this.pinesData[pin].data.id,
+            });
+            if (extra != {}) {
+              this.formData['sensor'].push(extra);
+            }
+          } else {
+            this.formData['sensor'].push({
+              platform: this.pinesData[pin].subType,
+              id: this.pinesData[pin].data.id,
+              name: this.pinesData[pin].data.name,
+              pin: pin,
+              extra
+            });
+          }
         }
       });
+      if (this.formData['output'].length == 0) {
+        delete this.formData['output'];
+      }
+      if (this.formData['light'].length == 0) {
+        delete this.formData['light'];
+      }
+      if (this.formData['switch'].length == 0) {
+        delete this.formData['switch'];
+      }
+      if (this.formData['binary_sensor'].length == 0) {
+        delete this.formData['binary_sensor'];
+      }
+      if (this.formData['dallas'].length == 0) {
+        delete this.formData['dallas'];
+      }
+      if (this.formData['sensor'].length == 0 || typeof this.formData['sensor'][0].pin === 'undefined') {
+        delete this.formData['sensor'];
+      }
     },
     submit() {
       this.conf2esphome();
@@ -347,7 +403,7 @@ export default {
       get: function () {
         return (port, position, name) => {
           if (name != '') {
-            return this.slugify(this.fileName + ' ' + port + ' ' + position + ' ' + name);
+            return this.slugify(this.fileName + ' ' + port + ' ' + position) + '__' + this.slugify(name);
           } else {
             return null;
           }

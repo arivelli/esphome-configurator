@@ -28,9 +28,9 @@
     ],
     "IN": [
       "GPIO34",
+      "GPIO39",
       "GPIO35",
-      "GPIO36",
-      "GPIO39"
+      "GPIO36"
     ],
     "AUX": [
       "GPIO00",

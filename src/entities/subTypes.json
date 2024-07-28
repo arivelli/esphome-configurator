@@ -10,6 +10,13 @@
       "label":"Llave de luz (GPIO)"
     }
   ],
+"sensor":
+  [
+    {
+      "value":"dallas",
+      "label":"Temperatura (Dallas)"
+    }
+  ],
 "output":
   [
     {
@@ -24,5 +31,6 @@
       "value":"heater",
       "label":"Calefactor"
     }
+
   ]
 }

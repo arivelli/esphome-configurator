@@ -1,0 +1,168 @@
+esphome:
+  friendly_name: Living Norte
+  name: living_norte
+  project:
+    name: arivelli.nodemcu-32s_v1
+    version: 1.0.0
+esp32:
+  board: nodemcu-32s
+  framework:
+    type: arduino
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+  ap:
+    ssid: living_norte
+    password: 30EAgUDOl3Yk
+captive_portal: null
+logger:
+  level: VERBOSE
+api:
+  encryption:
+    key: MmAl3Emuz/G3P5fFO2gdmCAQjq4fULY5a4fEOUMC8Jg=
+ota:
+  platform: esphome
+  password: qazwsx
+binary_sensor:
+  - platform: gpio
+    id: living_norte_3_0__llave_luz_pool
+    name: Llave luz pool
+    pin:
+      number: GPIO32
+      inverted: true
+      mode:
+        input: true
+        pullup: true
+    filters:
+      - delayed_on: 150ms
+      - delayed_off: 150ms
+  - platform: gpio
+    id: living_norte_3_2__llave_luz_ventilador
+    name: Llave luz ventilador
+    pin:
+      number: GPIO33
+      inverted: true
+      mode:
+        input: true
+        pullup: true
+    filters:
+      - delayed_on: 150ms
+      - delayed_off: 150ms
+  - platform: gpio
+    id: living_norte_3_3__llave_luz_mueble_pool
+    name: Llave luz mueble pool
+    pin:
+      number: GPIO25
+      inverted: true
+      mode:
+        input: true
+        pullup: true
+    filters:
+      - delayed_on: 150ms
+      - delayed_off: 150ms
+  - platform: gpio
+    id: living_norte_4_0__llave_luz_galera_viga
+    name: Llave luz galería vigía
+    pin:
+      number: GPIO27
+      inverted: true
+      mode:
+        input: true
+        pullup: true
+    filters:
+      - delayed_on: 150ms
+      - delayed_off: 150ms
+  - platform: gpio
+    id: living_norte_4_1__llave_luz_pasillo
+    name: Llave luz pasillo
+    pin:
+      number: GPIO13
+      inverted: true
+      mode:
+        input: true
+        pullup: true
+    filters:
+      - delayed_on: 150ms
+      - delayed_off: 150ms
+  - platform: gpio
+    id: living_norte_4_2__llave_luz_entrada_principal
+    name: Llave luz entrada principal
+    pin:
+      number: GPIO14
+      inverted: true
+      mode:
+        input: true
+        pullup: true
+    filters:
+      - delayed_on: 150ms
+      - delayed_off: 150ms
+  - platform: gpio
+    name: Llave garganta
+    pin:
+      number: GPIO3
+      inverted: true
+      mode:
+        input: true
+        pullup: true
+    filters:
+      - delayed_on: 150ms
+      - delayed_off: 150ms
+light:
+  - platform: binary
+    name: Luz pool 1
+    output: __living_norte_1_0__luz_pool_1
+    id: living_norte_1_0__luz_pool_1
+  - platform: binary
+    name: Luz pool 2
+    output: __living_norte_1_1__luz_pool_2
+    id: living_norte_1_1__luz_pool_2
+  - platform: binary
+    name: Luz ventilador
+    output: __living_norte_1_2__luz_ventilador
+    id: living_norte_1_2__luz_ventilador
+  - platform: binary
+    name: Luz mueble pool
+    output: __living_norte_1_3__luz_mueble_pool
+    id: living_norte_1_3__luz_mueble_pool
+  - platform: binary
+    name: Luz galería vigía
+    output: __living_2_0_luz_galera_viga
+    id: living_2_0_luz_galera_viga
+  - platform: binary
+    name: Luz pasillo
+    output: __living_norte_2_1__luz_pasillo
+    id: living_norte_2_1__luz_pasillo
+  - platform: binary
+    name: Luz entrada principal
+    output: __living_norte_aux_2__luz_entrada_principal
+    id: living_norte_aux_2__luz_entrada_principal
+output:
+  - platform: gpio
+    pin: GPIO23
+    id: __living_norte_1_0__luz_pool_1
+  - platform: gpio
+    pin: GPIO19
+    id: __living_norte_1_1__luz_pool_2
+  - platform: gpio
+    pin: GPIO22
+    id: __living_norte_1_2__luz_ventilador
+  - platform: gpio
+    pin: GPIO21
+    id: __living_norte_1_3__luz_mueble_pool
+  - platform: gpio
+    pin: GPIO18
+    id: __living_2_0_luz_galera_viga
+  - platform: gpio
+    pin: GPIO04
+    id: __living_norte_2_1__luz_pasillo
+  - platform: gpio
+    pin: GPIO05
+    id: __living_norte_aux_2__luz_entrada_principal
+  - platform: gpio
+    pin: GPIO15
+    id: __living_norte_aux_3__portn_garage
+switch:
+  - platform: output
+    name: Portón garage
+    output: __living_norte_aux_3__portn_garage
+    id: living_norte_aux_3__portn_garage

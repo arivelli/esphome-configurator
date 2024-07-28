@@ -132,9 +132,8 @@ binary_sensor:
     on_press:
       then:
         - light.toggle: lavadero_1_2_luz_lavadero
-
   - platform: gpio
-    id: lavadero_4_0_flotante_tanque_de_agua_lleno
+    id: lavadero_4_3_flotante_tanque_de_agua_lleno
     name: Flotante tanque de agua lleno
     pin:
       number: GPIO12

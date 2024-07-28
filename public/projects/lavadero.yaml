@@ -12,7 +12,7 @@ wifi:
   ssid: !secret wifi_ssid
   password: !secret wifi_password
   ap:
-    ssid: Lavadero Fallback Hotspot
+    ssid: lavadero
     password: 30EAgUDOl3Yk
 captive_portal: null
 logger:
@@ -24,75 +24,75 @@ ota:
   password: qazwsx
 light:
   - platform: binary
-    name: Luz doble altura central
-    output: __lavadero_2_0_luz_doble_altura_central
-    id: lavadero_2_0_luz_doble_altura_central
-  - platform: binary
-    name: Luz doble altura lateral
-    output: __lavadero_2_1_luz_doble_altura_lateral
-    id: lavadero_2_1_luz_doble_altura_lateral
-  - platform: binary
     name: Luz Lavadero
-    output: __lavadero_1_2_luz_lavadero
-    id: lavadero_1_2_luz_lavadero
+    output: __lavadero_1_2__luz_lavadero
+    id: lavadero_1_2__luz_lavadero
   - platform: binary
     name: Luz Tanque
-    output: __lavadero_1_3_luz_tanque
-    id: lavadero_1_3_luz_tanque
+    output: __lavadero_1_3__luz_tanque
+    id: lavadero_1_3__luz_tanque
+  - platform: binary
+    name: Luz doble altura central
+    output: __lavadero_2_0__luz_doble_altura_central
+    id: lavadero_2_0__luz_doble_altura_central
+  - platform: binary
+    name: Luz doble altura lateral
+    output: __lavadero_2_1__luz_doble_altura_lateral
+    id: lavadero_2_1__luz_doble_altura_lateral
 output:
   - platform: gpio
-    pin: GPIO18
-    id: __lavadero_2_0_luz_doble_altura_central
-    inverted: true
-  - platform: gpio
-    pin: GPIO04
-    id: __lavadero_2_1_luz_doble_altura_lateral
-    inverted: true
-  - platform: gpio
-    pin: GPIO22
-    id: __lavadero_1_2_luz_lavadero
-    inverted: true
-  - platform: gpio
-    pin: GPIO21
-    id: __lavadero_1_3_luz_tanque
-    inverted: true
-  - platform: gpio
     pin: GPIO23
-    id: __lavadero_1_0_caldera_termostato
+    id: __lavadero_1_0__caldera_termostato
     inverted: true
   - platform: gpio
     pin: GPIO19
-    id: __lavadero_1_1_caldera_reset
+    id: __lavadero_1_1__caldera_reset
+    inverted: true
+  - platform: gpio
+    pin: GPIO22
+    id: __lavadero_1_2__luz_lavadero
+    inverted: true
+  - platform: gpio
+    pin: GPIO21
+    id: __lavadero_1_3__luz_tanque
+    inverted: true
+  - platform: gpio
+    pin: GPIO18
+    id: __lavadero_2_0__luz_doble_altura_central
+    inverted: true
+  - platform: gpio
+    pin: GPIO04
+    id: __lavadero_2_1__luz_doble_altura_lateral
     inverted: true
   - platform: gpio
     pin: GPIO17
-    id: __lavadero_2_2_subir_persiana
+    id: __lavadero_2_2__subir_persiana
     inverted: true
   - platform: gpio
     pin: GPIO16
-    id: __lavadero_2_3_bajar_persiana
+    id: __lavadero_2_3__bajar_persiana
     inverted: true
 switch:
   - platform: output
     name: Caldera termostato
-    output: __lavadero_1_0_caldera_termostato
-    id: lavadero_1_0_caldera_termostato
+    output: __lavadero_1_0__caldera_termostato
+    id: lavadero_1_0__caldera_termostato
   - platform: output
     name: Caldera reset
-    output: __lavadero_1_1_caldera_reset
-    id: lavadero_1_1_caldera_reset
+    output: __lavadero_1_1__caldera_reset
+    id: lavadero_1_1__caldera_reset
   - platform: output
     name: Subir persiana
-    output: __lavadero_2_2_subir_persiana
-    id: lavadero_2_2_subir_persiana
+    output: __lavadero_2_2__subir_persiana
+    id: lavadero_2_2__subir_persiana
   - platform: output
     name: Bajar persiana
-    output: __lavadero_2_3_bajar_persiana
-    id: lavadero_2_3_bajar_persiana
+    output: __lavadero_2_3__bajar_persiana
+    id: lavadero_2_3__bajar_persiana
 binary_sensor:
   - platform: gpio
-    id: lavadero_4_0_flotante_tanque_de_agua
-    name: Flotante tanque de agua
+    id: lavadero_4_0__flotante_tanque_de_agua_lleno
+    name: Flotante tanque de agua lleno
     pin:
       number: GPIO27
       inverted: true
@@ -103,8 +103,8 @@ binary_sensor:
       - delayed_on: 150ms
       - delayed_off: 150ms
   - platform: gpio
-    id: lavadero_4_1_llave_luz_tanque_de_agua_vacio
-    name: Llave luz tanque de agua vacío
+    id: lavadero_4_1__llave_luz_tanque_de_agua
+    name: Llave luz tanque de agua
     pin:
       number: GPIO13
       inverted: true
@@ -116,9 +116,9 @@ binary_sensor:
       - delayed_off: 150ms
     on_press:
       then:
-        - light.toggle: lavadero_1_3_luz_tanque
+        - light.toggle: lavadero_1_3__luz_tanque
   - platform: gpio
-    id: lavadero_4_2_llave_luz_lavadero
+    id: lavadero_4_2__llave_luz_lavadero
     name: Llave luz lavadero
     pin:
       number: GPIO14
@@ -131,10 +131,10 @@ binary_sensor:
       - delayed_off: 150ms
     on_press:
       then:
-        - light.toggle: lavadero_1_2_luz_lavadero
+        - light.toggle: lavadero_1_2__luz_lavadero
   - platform: gpio
-    id: lavadero_4_3_flotante_tanque_de_agua_lleno
-    name: Flotante tanque de agua lleno
+    id: lavadero_4_3__flotante_tanque_de_agua_vaco
+    name: Flotante tanque de agua vacío
     pin:
       number: GPIO12
       inverted: true
@@ -144,9 +144,8 @@ binary_sensor:
     filters:
       - delayed_on: 150ms
       - delayed_off: 150ms
-
   - platform: gpio
-    id: lavadero_aux_0_llave_doble_altura_luz_central
+    id: lavadero_aux_0__llave_doble_altura_luz_central
     name: Llave doble altura luz central
     pin:
       number: GPIO00
@@ -159,9 +158,9 @@ binary_sensor:
       - delayed_off: 150ms
     on_press:
       then:
-        - light.toggle: lavadero_2_0_luz_doble_altura_central
+        - light.toggle: lavadero_2_0__luz_doble_altura_central
   - platform: gpio
-    id: lavadero_aux_1_llave_doble_altura_bajar_persiana
+    id: lavadero_aux_1__llave_doble_altura_bajar_persiana
     name: Llave doble altura bajar persiana
     pin:
       number: GPIO02
@@ -177,14 +176,14 @@ binary_sensor:
         - if:
             condition:
               or:
-                - switch.is_on: lavadero_2_2_subir_persiana
-                - switch.is_on: lavadero_2_3_bajar_persiana
+                - switch.is_on: lavadero_2_2__subir_persiana
+                - switch.is_on: lavadero_2_3__bajar_persiana
             then:
               - cover.stop: lavadero_persiana_doble_altura
             else:
               - cover.close: lavadero_persiana_doble_altura
   - platform: gpio
-    id: lavadero_aux_2_llave_doble_altura_subir_persiana
+    id: lavadero_aux_2__llave_doble_altura_subir_persiana
     name: Llave doble altura subir persiana
     pin:
       number: GPIO05
@@ -200,14 +199,14 @@ binary_sensor:
         - if:
             condition:
               or:
-                - switch.is_on: lavadero_2_2_subir_persiana
-                - switch.is_on: lavadero_2_3_bajar_persiana
+                - switch.is_on: lavadero_2_2__subir_persiana
+                - switch.is_on: lavadero_2_3__bajar_persiana
             then:
               - cover.stop: lavadero_persiana_doble_altura
             else:
               - cover.open: lavadero_persiana_doble_altura
   - platform: gpio
-    id: lavadero_aux_3_llave_doble_altura_luz_lateral
+    id: lavadero_aux_3__llave_doble_altura_luz_lateral
     name: Llave doble altura luz lateral
     pin:
       number: GPIO15
@@ -220,18 +219,68 @@ binary_sensor:
       - delayed_off: 150ms
     on_press:
       then:
-        - light.toggle: lavadero_2_1_luz_doble_altura_lateral
+        - light.toggle: lavadero_2_1__luz_doble_altura_lateral
 cover:
   - platform: time_based
     id: lavadero_persiana_doble_altura
     name: Persiana doble altura
     device_class: curtain
     open_action:
-      - switch.turn_on: lavadero_2_2_subir_persiana
+      - switch.turn_on: lavadero_2_2__subir_persiana
     open_duration: 53sec
     close_action:
-      - switch.turn_on: lavadero_2_3_bajar_persiana
+      - switch.turn_on: lavadero_2_3__bajar_persiana
     close_duration: 53sec
     stop_action:
-      - switch.turn_off: lavadero_2_2_subir_persiana
-      - switch.turn_off: lavadero_2_3_bajar_persiana
+      - switch.turn_off: lavadero_2_2__subir_persiana
+      - switch.turn_off: lavadero_2_3__bajar_persiana
+dallas:
+  - pin: GPIO32
+    id: lavadero_3_0__temperatura_planta_alta
+sensor:
+  - platform: dallas
+    address: 0x4a3c01f09627d728
+    name: Temperatura interior
+    id: lavadero_3_0__temperatura_interior
+    filters:
+      - sliding_window_moving_average:
+          window_size: 10
+          send_every: 10
+          send_first_at: 5
+    unit_of_measurement: °C
+    accuracy_decimals: 2
+  - platform: dallas
+    address: 0x583c01f096309a28
+    name: Temperatura lavadero
+    id: lavadero_3_0__temperatura_lavadero
+    filters:
+      - sliding_window_moving_average:
+          window_size: 10
+          send_every: 10
+          send_first_at: 5
+    unit_of_measurement: °C
+    accuracy_decimals: 2
+  - platform: dallas
+    address: 0x2b3c01f0963b0c28
+    name: Temperatura cielorraso
+    id: lavadero_3_0__temperatura_cielorraso
+    filters:
+      - sliding_window_moving_average:
+          window_size: 10
+          send_every: 10
+          send_first_at: 5
+    unit_of_measurement: °C
+    accuracy_decimals: 2
+climate:
+  - platform: thermostat
+    name: Calefacción
+    sensor: lavadero_3_0__temperatura_interior
+    heat_action:
+      - switch.turn_on: lavadero_1_0__caldera_termostato
+    min_idle_time: 60s
+    idle_action:
+      - switch.turn_off: lavadero_1_0__caldera_termostato
+    min_heating_off_time: 300s
+    min_heating_run_time: 300s
+    heat_deadband: 0.2°C
+    heat_overrun: 0.1°C
