@@ -33,7 +33,7 @@ As you can see on the following picture the board make use of 6 rj45 ports (not 
 - The IN jack could only be used for inputs.
 - Finally the AUX could be used carefully since have strapping pins (check ESP32 website for more information)
 
-![esphome configurator board preview](/assets/ports.png)
+![esphome configurator board preview](/assets/board.jpg)
 
 ## The Application
 
