@@ -1,6 +1,6 @@
 esphome:
-  friendly_name: Living
-  name: living2
+  friendly_name: Living Sur
+  name: living-sur2
   project:
     name: arivelli.nodemcu-32s_v1
     version: 1.0.0
@@ -8,16 +8,15 @@ esp32:
   board: nodemcu-32s
   framework:
     type: arduino
-
 wifi:
   ssid: !secret wifi_ssid
   password: !secret wifi_password
   ap:
-    ssid: living
+    ssid: living_sur
     password: 30EAgUDOl3Yk
 captive_portal: null
 logger:
-  level: DEBUG
+  level: VERBOSE
 api:
   encryption:
     key: MmAl3Emuz/G3P5fFO2gdmCAQjq4fULY5a4fEOUMC8Jg=
@@ -26,10 +25,10 @@ ota:
   password: qazwsx
 binary_sensor:
   - platform: gpio
-    id: living_4_0_llave_de_luz_parrilla
-    name: Llave de luz parrilla
+    id: living_sur_1_2__llave_persiana_living_subir
+    name: Llave persiana living subir
     pin:
-      number: GPIO27
+      number: GPIO22
       inverted: true
       mode:
         input: true
@@ -37,11 +36,60 @@ binary_sensor:
     filters:
       - delayed_on: 150ms
       - delayed_off: 150ms
+    on_press:
+      then:
+        - if:
+            condition:
+              or:
+                - switch.is_on: living_sur_1_0__persiana_living_subir
+                - switch.is_on: living_sur_1_1__persiana_living_bajar
+            then:
+              - cover.stop: living_sur_persiana_living
+            else:
+              - cover.open: living_sur_persiana_living
   - platform: gpio
-    id: living_4_1_llave_de_luz_galera_lamparitas
+    id: living_sur_1_3__llave_persiana_living_bajar
+    name: Llave persiana living bajar
+    pin:
+      number: GPIO21
+      inverted: true
+      mode:
+        input: true
+        pullup: true
+    filters:
+      - delayed_on: 150ms
+      - delayed_off: 150ms
+    on_press:
+      then:
+        - if:
+            condition:
+              or:
+                - switch.is_on: living_sur_1_0__persiana_living_subir
+                - switch.is_on: living_sur_1_1__persiana_living_bajar
+            then:
+              - cover.stop: living_sur_persiana_living
+            else:
+              - cover.close: living_sur_persiana_living
+  - platform: gpio
+    id: living_sur_2_2__llave_de_luz_alacena
+    name: Llave de luz alacena
+    pin:
+      number: GPIO17
+      inverted: true
+      mode:
+        input: true
+        pullup: true
+    filters:
+      - delayed_on: 150ms
+      - delayed_off: 150ms
+    on_press:
+      then:
+        - light.toggle: living_sur_2_0__luz_alacena
+  - platform: gpio
+    id: living_sur_3_2__llave_de_luz_galera_lamparitas
     name: Llave de luz galería lamparitas
     pin:
-      number: GPIO13
+      number: GPIO33
       inverted: true
       mode:
         input: true
@@ -49,9 +97,27 @@ binary_sensor:
     filters:
       - delayed_on: 150ms
       - delayed_off: 150ms
+    on_press:
+      then:
+        - light.toggle: living_sur_3_0__luz_galera_lamparitas
   - platform: gpio
-    id: living_4_2_llave_de_luz_cocina
-    name: Llave de luz cocina
+    id: living_sur_3_3__llave_de_luz_parrillero
+    name: Llave de luz parrillero
+    pin:
+      number: GPIO25
+      inverted: true
+      mode:
+        input: true
+        pullup: true
+    filters:
+      - delayed_on: 150ms
+      - delayed_off: 150ms
+    on_press:
+      then:
+        - light.toggle: living_sur_3_1__luz_parrillero
+  - platform: gpio
+    id: living_sur_4_2__llave_persiana_juegos_subir
+    name: Llave persiana juegos subir
     pin:
       number: GPIO14
       inverted: true
@@ -61,9 +127,20 @@ binary_sensor:
     filters:
       - delayed_on: 150ms
       - delayed_off: 150ms
+    on_press:
+      then:
+        - if:
+            condition:
+              or:
+                - switch.is_on: living_sur_4_0__persiana_juegos_subir
+                - switch.is_on: living_sur_4_1__persiana_juegos_bajar
+            then:
+              - cover.stop: living_sur_persiana_juegos
+            else:
+              - cover.open: living_sur_persiana_juegos
   - platform: gpio
-    id: living_4_3_llave_de_luz_bajo_alacena
-    name: Llave de luz bajo alacena
+    id: living_sur_4_3__llave_persiana_juegos_bajar
+    name: Llave persiana juegos bajar
     pin:
       number: GPIO12
       inverted: true
@@ -73,86 +150,17 @@ binary_sensor:
     filters:
       - delayed_on: 150ms
       - delayed_off: 150ms
-  - platform: gpio
-    id: living_in_0_llave_luz_cocina
-    name: Llave luz cocina
-    pin:
-      number: GPIO34
-      inverted: true
-      mode:
-        input: true
-    filters:
-      - delayed_on: 150ms
-      - delayed_off: 150ms
-  - platform: gpio
-    id: living_in_1_llave_luz_galera_viga
-    name: Llave luz galería vigía
-    pin:
-      number: GPIO35
-      inverted: true
-      mode:
-        input: true
-    filters:
-      - delayed_on: 150ms
-      - delayed_off: 150ms
-  - platform: gpio
-    id: living_in_2_llave_subir_persiana_living
-    name: Llave subir persiana living
-    pin:
-      number: GPIO36
-      inverted: true
-      mode:
-        input: true
-    filters:
-      - delayed_on: 150ms
-      - delayed_off: 150ms
-  - platform: gpio
-    id: living_in_3_llave_bajar_persiana_living
-    name: Llave bajar persiana living
-    pin:
-      number: GPIO39
-      inverted: true
-      mode:
-        input: true
-    filters:
-      - delayed_on: 150ms
-      - delayed_off: 150ms
-  - platform: gpio
-    id: living_aux_0_llave_de_luz_pool
-    name: Llave de luz pool
-    pin:
-      number: GPIO00
-      inverted: true
-      mode:
-        input: true
-        pullup: true
-    filters:
-      - delayed_on: 150ms
-      - delayed_off: 150ms
-  - platform: gpio
-    id: living_aux_1_llave_de_luz_ventilador
-    name: Llave de luz ventilador
-    pin:
-      number: GPIO02
-      inverted: true
-      mode:
-        input: true
-        pullup: true
-    filters:
-      - delayed_on: 150ms
-      - delayed_off: 150ms
-  - platform: gpio
-    id: living_aux_2_llave_de_luz_garganta
-    name: Llave de luz garganta
-    pin:
-      number: GPIO05
-      inverted: true
-      mode:
-        input: true
-        pullup: true
-    filters:
-      - delayed_on: 150ms
-      - delayed_off: 150ms
+    on_press:
+      then:
+        - if:
+            condition:
+              or:
+                - switch.is_on: living_sur_4_0__persiana_juegos_subir
+                - switch.is_on: living_sur_4_1__persiana_juegos_bajar
+            then:
+              - cover.stop: living_sur_persiana_juegos
+            else:
+              - cover.close: living_sur_persiana_juegos
   - platform: gpio
     name: Llave garganta
     pin:
@@ -166,81 +174,87 @@ binary_sensor:
       - delayed_off: 150ms
 light:
   - platform: binary
-    name: Luces pool 1
-    output: __living_1_0_luces_pool_1
-    id: living_1_0_luces_pool_1
-  - platform: binary
-    name: Luces pool 2
-    output: __living_1_1_luces_pool_2
-    id: living_1_1_luces_pool_2
-  - platform: binary
-    name: Luces ventilador
-    output: __light_ventilador
-    id: light_ventilador
-  - platform: binary
-    name: Luz cocina
-    output: __living_1_3_luz_cocina
-    id: living_1_3_luz_cocina
-  - platform: binary
-    name: Luz galería vigía
-    output: __living_2_0_luz_galera_viga
-    id: living_2_0_luz_galera_viga
+    name: Luz alacena
+    output: __living_sur_2_0__luz_alacena
+    id: living_sur_2_0__luz_alacena
   - platform: binary
     name: Luz galería lamparitas
-    output: __living_2_1_luz_galera_lamparitas
-    id: living_2_1_luz_galera_lamparitas
+    output: __living_sur_3_0__luz_galera_lamparitas
+    id: living_sur_3_0__luz_galera_lamparitas
   - platform: binary
     name: Luz parrillero
-    output: __living_2_2_luz_parrillero
-    id: living_2_2_luz_parrillero
-  - platform: binary
-    name: Luz bajo alacena
-    output: __living_2_3_luz_bajo_alacena
-    id: living_2_3_luz_bajo_alacena
-  - platform: binary
-    name: Luz pasillo
-    output: __living_3_0_luz_pasillo
-    id: living_3_0_luz_pasillo
+    output: __living_sur_3_1__luz_parrillero
+    id: living_sur_3_1__luz_parrillero
 output:
   - platform: gpio
     pin: GPIO23
-    id: __living_1_0_luces_pool_1
+    id: __living_sur_1_0__persiana_living_subir
+    inverted: true
   - platform: gpio
     pin: GPIO19
-    id: __living_1_1_luces_pool_2
-  - platform: gpio
-    pin: GPIO22
-    id: __light_ventilador
-  - platform: gpio
-    pin: GPIO21
-    id: __living_1_3_luz_cocina
+    id: __living_sur_1_1__persiana_living_bajar
+    inverted: true
   - platform: gpio
     pin: GPIO18
-    id: __living_2_0_luz_galera_viga
-  - platform: gpio
-    pin: GPIO04
-    id: __living_2_1_luz_galera_lamparitas
-  - platform: gpio
-    pin: GPIO17
-    id: __living_2_2_luz_parrillero
-  - platform: gpio
-    pin: GPIO16
-    id: __living_2_3_luz_bajo_alacena
+    id: __living_sur_2_0__luz_alacena
+    inverted: true
   - platform: gpio
     pin: GPIO32
-    id: __living_3_0_luz_pasillo
+    id: __living_sur_3_0__luz_galera_lamparitas
+    inverted: true
   - platform: gpio
-    pin: GPIO33
-    id: __living_3_2_subir_persiana_living
+    pin: GPIO26
+    id: __living_sur_3_1__luz_parrillero
+    inverted: true
   - platform: gpio
-    pin: GPIO25
-    id: __living_3_3_bajar_persiana_living
+    pin: GPIO27
+    id: __living_sur_4_0__persiana_juegos_subir
+    inverted: true
+  - platform: gpio
+    pin: GPIO13
+    id: __living_sur_4_1__persiana_juegos_bajar
+    inverted: true
 switch:
   - platform: output
-    name: Subir persiana living
-    output: __living_3_2_subir_persiana_living
-    id: living_3_2_subir_persiana_living
+    name: Persiana living subir
+    output: __living_sur_1_0__persiana_living_subir
+    id: living_sur_1_0__persiana_living_subir
   - platform: output
-    name: Bajar persiana living
-    output: __living_3_3_bajar_persiana_living
-    id: living_3_3_bajar_persiana_living
+    name: Persiana living bajar
+    output: __living_sur_1_1__persiana_living_bajar
+    id: living_sur_1_1__persiana_living_bajar
+  - platform: output
+    name: Persiana juegos subir
+    output: __living_sur_4_0__persiana_juegos_subir
+    id: living_sur_4_0__persiana_juegos_subir
+  - platform: output
+    name: Persiana juegos bajar
+    output: __living_sur_4_1__persiana_juegos_bajar
+    id: living_sur_4_1__persiana_juegos_bajar
+cover:
+  - platform: time_based
+    id: living_sur_persiana_living
+    name: Persiana Living
+    device_class: curtain
+    open_action:
+      - switch.turn_on: living_sur_1_0__persiana_living_subir
+    open_duration: 180sec
+    close_action:
+      - switch.turn_on: living_sur_1_1__persiana_living_bajar
+    close_duration: 180sec
+    stop_action:
+      - switch.turn_off: living_sur_1_0__persiana_living_subir
+      - switch.turn_off: living_sur_1_1__persiana_living_bajar
+  - platform: time_based
+    id: living_sur_persiana_juegos
+    name: Persiana Sala de juegos
+    device_class: curtain
+    open_action:
+      - switch.turn_on: living_sur_4_0__persiana_juegos_subir
+    open_duration: 108sec
+    close_action:
+      - switch.turn_on: living_sur_4_1__persiana_juegos_bajar
+    close_duration: 108sec
+    stop_action:
+      - switch.turn_off: living_sur_4_0__persiana_juegos_subir
+      - switch.turn_off: living_sur_4_1__persiana_juegos_bajar

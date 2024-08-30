@@ -1,6 +1,6 @@
 esphome:
   friendly_name: Living Norte
-  name: living_norte
+  name: living-norte
   project:
     name: arivelli.nodemcu-32s_v1
     version: 1.0.0
@@ -12,7 +12,7 @@ wifi:
   ssid: !secret wifi_ssid
   password: !secret wifi_password
   ap:
-    ssid: living_norte
+    ssid: living-norte
     password: 30EAgUDOl3Yk
 captive_portal: null
 logger:
@@ -36,6 +36,49 @@ binary_sensor:
     filters:
       - delayed_on: 150ms
       - delayed_off: 150ms
+    on_state:
+      then:
+        if:
+          condition:
+            and:
+              - light.is_on: living_norte_1_0__luz_pool_1
+              - light.is_on: living_norte_1_1__luz_pool_2
+          then:
+            - light.turn_off: living_norte_1_0__luz_pool_1
+            - light.turn_off: living_norte_1_1__luz_pool_2
+          else:
+            if:
+              condition:
+                and:
+                  - light.is_on: living_norte_1_0__luz_pool_1
+              then:
+                - light.turn_off: living_norte_1_0__luz_pool_1
+                - light.turn_on: living_norte_1_1__luz_pool_2
+              else:
+                if:
+                  condition:
+                    and:
+                      - light.is_on: living_norte_1_1__luz_pool_2
+                  then:
+                    - light.turn_on: living_norte_1_0__luz_pool_1
+                    - light.turn_on: living_norte_1_1__luz_pool_2
+                  else:
+                    - light.turn_on: living_norte_1_0__luz_pool_1
+  - platform: gpio
+    id: living_norte_3_1__llave_luz_cocina
+    name: Llave luz cocina
+    pin:
+      number: GPIO26
+      inverted: true
+      mode:
+        input: true
+        pullup: true
+    filters:
+      - delayed_on: 150ms
+      - delayed_off: 150ms
+    on_state:
+      then:
+        - light.toggle: living_norte_1_3__luz_cocina
   - platform: gpio
     id: living_norte_3_2__llave_luz_ventilador
     name: Llave luz ventilador
@@ -48,18 +91,9 @@ binary_sensor:
     filters:
       - delayed_on: 150ms
       - delayed_off: 150ms
-  - platform: gpio
-    id: living_norte_3_3__llave_luz_mueble_pool
-    name: Llave luz mueble pool
-    pin:
-      number: GPIO25
-      inverted: true
-      mode:
-        input: true
-        pullup: true
-    filters:
-      - delayed_on: 150ms
-      - delayed_off: 150ms
+    on_state:
+      then:
+        - light.toggle: living_norte_1_2__luz_ventilador
   - platform: gpio
     id: living_norte_4_0__llave_luz_galera_viga
     name: Llave luz galería vigía
@@ -72,6 +106,9 @@ binary_sensor:
     filters:
       - delayed_on: 150ms
       - delayed_off: 150ms
+    on_state:
+      then:
+        - light.toggle: living_norte_2_0__luz_galera_viga
   - platform: gpio
     id: living_norte_4_1__llave_luz_pasillo
     name: Llave luz pasillo
@@ -84,6 +121,9 @@ binary_sensor:
     filters:
       - delayed_on: 150ms
       - delayed_off: 150ms
+    on_state:
+      then:
+        - light.toggle: living_norte_2_1__luz_pasillo
   - platform: gpio
     id: living_norte_4_2__llave_luz_entrada_principal
     name: Llave luz entrada principal
@@ -96,6 +136,24 @@ binary_sensor:
     filters:
       - delayed_on: 150ms
       - delayed_off: 150ms
+    on_state:
+      then:
+        - light.toggle: living_norte_2_2__luz_entrada_principal
+  - platform: gpio
+    id: living_norte_4_3__llave_luz_guardarropas
+    name: Llave luz guardarropas
+    pin:
+      number: GPIO12
+      inverted: true
+      mode:
+        input: true
+        pullup: true
+    filters:
+      - delayed_on: 150ms
+      - delayed_off: 150ms
+    on_state:
+      then:
+        - light.toggle: living_norte_2_3__luz_guardarropas
   - platform: gpio
     name: Llave garganta
     pin:
@@ -121,48 +179,88 @@ light:
     output: __living_norte_1_2__luz_ventilador
     id: living_norte_1_2__luz_ventilador
   - platform: binary
-    name: Luz mueble pool
-    output: __living_norte_1_3__luz_mueble_pool
-    id: living_norte_1_3__luz_mueble_pool
+    name: Luz cocina
+    output: __living_norte_1_3__luz_cocina
+    id: living_norte_1_3__luz_cocina
   - platform: binary
     name: Luz galería vigía
-    output: __living_2_0_luz_galera_viga
-    id: living_2_0_luz_galera_viga
+    output: __living_norte_2_0__luz_galera_viga
+    id: living_norte_2_0__luz_galera_viga
   - platform: binary
     name: Luz pasillo
     output: __living_norte_2_1__luz_pasillo
     id: living_norte_2_1__luz_pasillo
   - platform: binary
+    name: luz entrada principal
+    output: __living_norte_2_2__luz_entrada_principal
+    id: living_norte_2_2__luz_entrada_principal
+  - platform: binary
+    name: Luz guardarropas
+    output: __living_norte_2_3__luz_guardarropas
+    id: living_norte_2_3__luz_guardarropas
+  - platform: binary
     name: Luz entrada principal
-    output: __living_norte_aux_2__luz_entrada_principal
-    id: living_norte_aux_2__luz_entrada_principal
+    output: __living_norte_aux_0__luz_entrada_principal
+    id: living_norte_aux_0__luz_entrada_principal
 output:
   - platform: gpio
     pin: GPIO23
     id: __living_norte_1_0__luz_pool_1
+    inverted: true
   - platform: gpio
     pin: GPIO19
     id: __living_norte_1_1__luz_pool_2
+    inverted: true
   - platform: gpio
     pin: GPIO22
     id: __living_norte_1_2__luz_ventilador
+    inverted: true
   - platform: gpio
     pin: GPIO21
-    id: __living_norte_1_3__luz_mueble_pool
+    id: __living_norte_1_3__luz_cocina
+    inverted: true
   - platform: gpio
     pin: GPIO18
-    id: __living_2_0_luz_galera_viga
+    id: __living_norte_2_0__luz_galera_viga
+    inverted: true
   - platform: gpio
     pin: GPIO04
     id: __living_norte_2_1__luz_pasillo
+    inverted: true
   - platform: gpio
-    pin: GPIO05
-    id: __living_norte_aux_2__luz_entrada_principal
+    pin: GPIO17
+    id: __living_norte_2_2__luz_entrada_principal
+    inverted: true
   - platform: gpio
-    pin: GPIO15
-    id: __living_norte_aux_3__portn_garage
+    pin: GPIO16
+    id: __living_norte_2_3__luz_guardarropas
+    inverted: true
+  - platform: gpio
+    pin: GPIO00
+    id: __living_norte_aux_0__luz_entrada_principal
+    inverted: true
+  - platform: gpio
+    pin: GPIO02
+    id: __living_norte_aux_1__portn_garage
+    inverted: true
 switch:
   - platform: output
     name: Portón garage
-    output: __living_norte_aux_3__portn_garage
-    id: living_norte_aux_3__portn_garage
+    output: __living_norte_aux_1__portn_garage
+    id: living_norte_aux_1__portn_garage
+    on_turn_on:
+      then:
+        - delay: 500ms
+        - switch.turn_off: living_norte_aux_1__portn_garage
+cover:
+  - platform: template
+    name: Portón garage
+    open_action:
+      - switch.turn_on: living_norte_aux_1__portn_garage
+    close_action:
+      - switch.turn_on: living_norte_aux_1__portn_garage
+    stop_action:
+      - switch.turn_on: living_norte_aux_1__portn_garage
+    optimistic: true
+    assumed_state: true
+    icon: mdi:garage

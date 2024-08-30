@@ -151,7 +151,7 @@ export default {
   methods: {
     openFile(fileName) {
       axios
-        .get(`http://localhost:3000/files/${fileName}`)
+        .get(`http://192.168.3.100:3000/files/${fileName}`)
         .then((response) => {
           this.selectedFile = { name: fileName };
           this.fileContent = response.data;
@@ -219,7 +219,7 @@ export default {
                   this.pinesData[pin].data.name = element.name;
                   this.pinesData[pin].data.id = element.id;
                   this.pinesData[pin].data.platform = 'output';
-                  //this.pinesData[pin].data.inverted = true;
+                  this.pinesData[pin].data.inverted = true;
                 } else {
                   this.pinesData[pin].type = key;
                   
@@ -306,7 +306,7 @@ export default {
             platform: 'gpio',
             pin: pin,
             id: '__' + this.pinesData[pin].data.id,
-            //inverted: true,
+            inverted: true,
             ...extra
           });
           if ((this.pinesData[pin].subType == 'light') || (this.pinesData[pin].subType == 'switch')) {
@@ -389,7 +389,7 @@ export default {
     submit() {
       this.conf2esphome();
       axios
-        .post(`http://localhost:3000/files/${this.fileName}`, this.formData)
+        .post(`http://192.168.3.100:3000/files/${this.fileName}`, this.formData)
         .then((response) => {
           console.log('Archivo guardado:', response);
         })

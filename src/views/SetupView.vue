@@ -42,7 +42,7 @@ export default {
     };
   },
   created() {
-    axios.get('http://localhost:3000/setup')
+    axios.get('http://192.168.3.100:3000/setup')
       .then(response => {
         this.formData = response.data;
         this.loading = false;
@@ -54,7 +54,7 @@ export default {
   },
   methods: {
     save() {
-      axios.post('http://localhost:3000/setup', this.formData)
+      axios.post('http://192.168.3.100:3000/setup', this.formData)
         .then(response => {
           console.log(response);
         })

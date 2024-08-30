@@ -15,4 +15,14 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
   },
+  server: {
+    host: '192.168.3.100',
+    proxy: {
+      '**': {
+        target: 'http://192.168.3.100:3000',
+        changeOrigin: true,
+      }
+    }
+
+  }
 })

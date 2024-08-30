@@ -33,7 +33,7 @@ export default {
     };
   },
   mounted() {
-    axios.get('http://localhost:3000/files')
+    axios.get('http://192.168.3.100:3000/files')
       .then(response => {
         this.files = response.data.files;
       })

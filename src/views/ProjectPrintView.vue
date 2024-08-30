@@ -105,7 +105,7 @@ export default {
   methods: {
     openFile(fileName) {
       axios
-        .get(`http://localhost:3000/files/${fileName}`)
+        .get(`http://192.168.3.100:3000/files/${fileName}`)
         .then((response) => {
           this.selectedFile = { name: fileName };
           this.fileContent = response.data;
@@ -284,7 +284,7 @@ export default {
     submit() {
       this.conf2esphome();
       axios
-        .post(`http://localhost:3000/files/${this.fileName}`, this.formData)
+        .post(`http://192.168.3.100:3000/files/${this.fileName}`, this.formData)
         .then((response) => {
           console.log('Archivo guardado:', response);
         })
