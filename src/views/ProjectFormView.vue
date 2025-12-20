@@ -304,6 +304,7 @@ export default {
       this.formData['binary_sensor'] = [];
       this.formData['dallas'] = [];
       this.formData['sensor'] = [];
+      this.formData['climate'] = [];
 
       const usedNames = new Set();
       Object.keys(this.pinesData).forEach((pin) => {
@@ -386,6 +387,19 @@ export default {
             });
           }
         }
+
+        if (
+          (this.pinesData[pin].type == 'climate')
+          && (this.pinesData[pin].subType == 'thermostat')
+          && (this.pinesData[pin].data.name != '')
+        ) {
+          const uniqueName = this.ensureUniqueValue(this.pinesData[pin].data.name, usedNames);
+          this.formData['climate'].push({
+            platform: 'thermostat',
+            name: uniqueName,
+            ...extra
+          });
+        }
       });
       if (this.formData['output'].length == 0) {
         delete this.formData['output'];
@@ -404,6 +418,9 @@ export default {
       }
       if (this.formData['sensor'].length == 0 || typeof this.formData['sensor'][0].pin === 'undefined') {
         delete this.formData['sensor'];
+      }
+      if (this.formData['climate'].length == 0) {
+        delete this.formData['climate'];
       }
     },
     submit() {

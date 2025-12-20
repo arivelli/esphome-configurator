@@ -17,6 +17,13 @@
       "label":"Temperatura (Dallas)"
     }
   ],
+"climate":
+  [
+    {
+      "value":"thermostat",
+      "label":"Termostato (climate)"
+    }
+  ],
 "output":
   [
     {

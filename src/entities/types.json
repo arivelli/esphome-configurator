@@ -8,6 +8,10 @@
     "label":"Sensor"
   },
   {
+    "value":"climate",
+    "label":"Clima"
+  },
+  {
     "value":"output",
     "label":"Salida"
   }
