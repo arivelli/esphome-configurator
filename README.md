@@ -33,6 +33,34 @@ As you can see on the following picture the board make use of 6 rj45 ports (not 
 - The IN jack could only be used for inputs.
 - Finally the AUX could be used carefully since have strapping pins (check ESP32 website for more information)
 
+#### Cable colors (UTP)
+
+This board uses RJ45 connectors as generic I/O ports (not Ethernet). If you crimp cables using the common **TIA/EIA-568B (T568B)** order, the typical color mapping is:
+
+| Pin | Color (T568B) | Function |
+| --- | --- | --- |
+| 1 | White/Orange | 3.3V |
+| 2 | Orange | 5V |
+| 3 | White/Green | GND |
+| 4 | Blue | GND |
+| 5 | White/Blue | I/O 4 |
+| 6 | Green | I/O 3 |
+| 7 | White/Brown | I/O 2 |
+| 8 | Brown | I/O 1 |
+
+#### Port to GPIO mapping
+
+The software maps the RJ45 ports to ESP32 pins as follows:
+
+| Port | Pin 1 | Pin 2 | Pin 3 | Pin 4 | Notes |
+| --- | --- | --- | --- | --- | --- |
+| 1 | GPIO23 | GPIO19 | GPIO22 | GPIO21 |  |
+| 2 | GPIO18 | GPIO04 | GPIO17 | GPIO16 |  |
+| 3 | GPIO32 | GPIO26 | GPIO33 | GPIO25 |  |
+| 4 | GPIO27 | GPIO13 | GPIO14 | GPIO12 |  |
+| IN | GPIO34 | GPIO39 | GPIO35 | GPIO36 | Input-only pins |
+| AUX | GPIO00 | GPIO02 | GPIO05 | GPIO15 | ESP32 strapping pins (use with care) |
+
 ![esphome configurator board preview](/assets/board.jpg)
 
 ## The Application

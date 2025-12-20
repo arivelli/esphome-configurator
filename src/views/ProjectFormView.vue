@@ -180,6 +180,20 @@ export default {
         .replace(/-+$/, "") // Trim - from end of text
         .replace(/__+/g, "_"); // Replace multiple _ with single _
     },
+    ensureUniqueValue(baseValue, usedSet) {
+      const base = (typeof baseValue === 'string' && baseValue.trim() !== '') ? baseValue.trim() : 'Unnamed';
+      if (!usedSet.has(base)) {
+        usedSet.add(base);
+        return base;
+      }
+      let i = 2;
+      while (usedSet.has(`${base} ${i}`)) {
+        i += 1;
+      }
+      const next = `${base} ${i}`;
+      usedSet.add(next);
+      return next;
+    },
     esphome2conf() {
       const keys = Object.keys(this.fileContent);
 
@@ -290,6 +304,8 @@ export default {
       this.formData['binary_sensor'] = [];
       this.formData['dallas'] = [];
       this.formData['sensor'] = [];
+
+      const usedNames = new Set();
       Object.keys(this.pinesData).forEach((pin) => {
         let extra = {};
           if(typeof this.pinesData[pin].data.extra !== 'undefined') {
@@ -310,9 +326,10 @@ export default {
             ...extra
           });
           if ((this.pinesData[pin].subType == 'light') || (this.pinesData[pin].subType == 'switch')) {
+            const uniqueName = this.ensureUniqueValue(this.pinesData[pin].data.name, usedNames);
             this.formData[this.pinesData[pin].subType].push({
               platform: (this.pinesData[pin].subType == 'switch') ? 'output' : 'binary',
-              name: this.pinesData[pin].data.name,
+              name: uniqueName,
               output: '__' + this.pinesData[pin].data.id,
               id: this.pinesData[pin].data.id,
               ...extra
@@ -323,11 +340,13 @@ export default {
           (this.pinesData[pin].type == 'binary_sensor')
           && (this.pinesData[pin].data.name != '')
         ) {
+
+          const uniqueName = this.ensureUniqueValue(this.pinesData[pin].data.name, usedNames);
           
           this.formData['binary_sensor'].push({
             platform: 'gpio',
             id: this.pinesData[pin].data.id,
-            name: this.pinesData[pin].data.name,
+            name: uniqueName,
             pin: {
               number: pin,
               inverted: true,
@@ -357,10 +376,11 @@ export default {
               this.formData['sensor'].push(extra);
             }
           } else {
+            const uniqueName = this.ensureUniqueValue(this.pinesData[pin].data.name, usedNames);
             this.formData['sensor'].push({
               platform: this.pinesData[pin].subType,
               id: this.pinesData[pin].data.id,
-              name: this.pinesData[pin].data.name,
+              name: uniqueName,
               pin: pin,
               extra
             });
